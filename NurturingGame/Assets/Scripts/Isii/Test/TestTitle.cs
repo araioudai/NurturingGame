@@ -24,7 +24,7 @@ public class TestTitle : SceneManager
     {
         // プレイゲーム処理
         Debug.Log("PlayGameStart");
-        dataManager.LoadPlayerData();
+        dataManager.InitLoadPlayerData();
     }
 
     override public void SettingStart()

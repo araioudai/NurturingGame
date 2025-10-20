@@ -4,13 +4,14 @@ using static Common;
 
 public class DataManager : MonoBehaviour
 {
-    [SerializeField] private SaveData playerDataList;
-    [SerializeField] private PlayerData currentPlayerData;
+    [SerializeField] private SaveData playerDataList;           // プレイヤーデータリスト
+    [SerializeField] private PlayerData currentPlayerData;      // 現在のプレイヤーデータ
 
     [Header("設定")]
     [SerializeField, Range(0, 127)] private int playerNoCurrent = 0; // プレイヤー番号を指定するための変数
     [SerializeField] private JobHandle jobHandle; // 初期職業を指定するための変数
     [SerializeField] private string playerName = "UnityChan"; // プレイヤー名を指定するための変数
+    [SerializeField] private string saveFileName = "Players.json"; // 保存ファイル名
 
 
     void Start()
@@ -23,21 +24,24 @@ public class DataManager : MonoBehaviour
 
     }
 
-    public void LoadPlayerData()
+    /// <summary>
+    /// プレイヤーデータの初期化と読込
+    /// </summary>
+    public void InitLoadPlayerData()
     {
-        Debug.Log("LoadPlayerData");
-        string filePath = Path.Combine(Application.persistentDataPath, "Players.json");
+        Debug.Log("InitLoadPlayerData");
+        string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
 
         if (File.Exists(filePath))
         {
-            Debug.Log("LoadPlayerData: " + filePath, this);
+            Debug.Log("InitLoadPlayerData: " + filePath, this);
 
             string json = File.ReadAllText(filePath);
             playerDataList = JsonUtility.FromJson<SaveData>(json);
             if (playerDataList.PlayerNoCount > playerNoCurrent && playerNoCurrent >= 0 && playerDataList.playerData[playerNoCurrent] != null)
             {
                 Debug.Log("PlayerNo: " + playerNoCurrent, this);
-                currentPlayerData = playerDataList.playerData[playerNoCurrent];
+                LoadPlayerData(playerNoCurrent);
             }
             else if (playerNoCurrent >= 0)
             {
@@ -50,9 +54,9 @@ public class DataManager : MonoBehaviour
                 //     Debug.LogWarning("プレイヤーデータが存在しません(NULL): " + i, this);
                 // }
 
-                PlayerDataCreate();
+                CreatePlayer();       // currentPlayerDataを作成
                 playerDataList.playerData.Add(currentPlayerData);
-                SavePlayerData(); // 初期データを保存
+                //SavePlayerData();               // 初期データを保存
             }
             else
             {
@@ -62,7 +66,7 @@ public class DataManager : MonoBehaviour
         else
         {
             Debug.LogWarning("プレイヤーデータファイルが見つかりません: " + filePath, this);
-            PlayerDataCreate();
+            CreatePlayer();     // currentPlayerDataを作成
 
             // プレイヤーデータリストを初期化
             playerDataList = new SaveData
@@ -107,7 +111,9 @@ public class DataManager : MonoBehaviour
         // }
     }
 
-
+    /// <summary>
+    /// プレイヤーデータ作成
+    /// </summary>
     void PlayerDataCreate()
     {
         string firstStatusPath = Resources.Load<TextAsset>($"JsonData/{jobHandle}").text;
@@ -131,23 +137,21 @@ public class DataManager : MonoBehaviour
         };
     }
 
-
-
-
-
-
-
-
-
+    /// <summary>
+    /// プレイヤーデータ保存
+    /// </summary>
     [ContextMenu("SavePlayerData")]
-    void SavePlayerData()
+    public void SavePlayerData()
     {
         Debug.Log("SavePlayerData");
 
+        // 現在のプレイヤーデータをリストに反映
+        playerDataList.playerData[playerNoCurrent] = currentPlayerData;
         playerDataList.currentPlayerNo = playerNoCurrent;
         playerDataList.PlayerNoCount = playerDataList.playerData.Count;
 
-        string filePath = Path.Combine(Application.persistentDataPath, "Players.json");
+        // 保存先のファイルパスを生成
+        string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
         string json = JsonUtility.ToJson(playerDataList, true);
         File.WriteAllText(filePath, json);
 
@@ -156,8 +160,95 @@ public class DataManager : MonoBehaviour
         // File.WriteAllText(filePath, json);
     }
 
+    /// <summary>
+    /// プレイヤーデータのロード
+    /// </summary>
+    /// <param name="playerNo">プレイヤー番号</param>
+    public void LoadPlayerData(int playerNo)
+    {
+        playerNoCurrent = playerNo;
+        currentPlayerData = playerDataList.playerData[playerNoCurrent];
+    }
+
+    /// <summary>
+    /// 全データ削除
+    /// </summary>
+    public void AllDeleteData()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("DeleteData: " + filePath, this);
+        }
+        else
+        {
+            Debug.LogWarning("プレイヤーデータファイルが見つかりません: " + filePath, this);
+        }
+    }
+
+    /// <summary>
+    /// プレイヤーデータ削除
+    /// </summary>
+    /// <param name="playerNo">プレイヤー番号</param>
+    public void PlayerDataDelete(int playerNo)
+    {
+        playerNo = playerNoCurrent;
+
+        Debug.Log("PlayerDataDelete: " + playerNo, this);
+
+        if (playerNo < 0 || playerNo >= playerDataList.PlayerNoCount)
+        {
+            Debug.LogWarning("無効なプレイヤー番号です: " + playerNo, this);
+            return;
+        }
+
+        playerDataList.playerData.RemoveAt(playerNo);
+        playerDataList.PlayerNoCount = playerDataList.playerData.Count;
+
+        // 現在のプレイヤー番号が削除された番号以上の場合、-1する
+        if (playerNoCurrent >= playerNo && playerNoCurrent > 0)
+        {
+            playerNoCurrent--;
+        }
+
+        SavePlayerData();
+    }
+
+    /// <summary>
+    /// プレイヤー作成
+    /// </summary>
+    public void CreatePlayer()
+    {
+        Debug.Log("CreatePlayer: " + jobHandle, this);
+
+        string firstStatusPath = Resources.Load<TextAsset>($"JsonData/{jobHandle}").text;
+        if (string.IsNullOrEmpty(firstStatusPath))
+        {
+            Debug.LogError("ジョブの初期ステータスデータの読み込みに失敗しました: " + jobHandle, this);
+            return;
+        }
 
 
+        // 初期データを設定するなどの処理を行う
+        currentPlayerData = new PlayerData
+        {
+            name = playerName,
+            job = jobHandle,
+            level = 1,
+            exp = 0,
+            firstStatus = JsonUtility.FromJson<Status>(firstStatusPath),
+            addStatus = new Status(),
+            statusPoints = 0
+            //skills = new List<string>()
+        };
+
+        playerDataList.playerData.Add(currentPlayerData);
+        playerDataList.PlayerNoCount = playerDataList.playerData.Count;
+        playerNoCurrent = playerDataList.PlayerNoCount - 1; // 新しいプレイヤーを現在のプレイヤーに設定
+
+        SavePlayerData();
+    }
 
 
 
