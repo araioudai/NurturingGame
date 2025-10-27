@@ -63,6 +63,40 @@ public class Common
         public List<PlayerData> playerData = new();
     }
 
+    //////////////////////////////////////////////////////////////////////////////
+
+    /// <summary>
+    /// レベルアップ必要経験値テーブル
+    /// </summary>
+    public static readonly int[] levelUpExpTable = new int[]
+    {
+        0,      // レベル1
+        100,    // レベル2
+        300,    // レベル3
+        600,    // レベル4
+        1000,   // レベル5
+        1500,   // レベル6
+        2100,   // レベル7
+        2800,   // レベル8
+        3600,   // レベル9
+        4500    // レベル10
+    };
+
+    public static readonly int[] levelUpStatusTable = new int[]
+    {
+        10,     // HP
+        10,     // MP
+        5,      // Status Points
+    };
+
+
+
+
+
+
+
+
+
 
 
     //////////////////////////////////////////////////////////////////////////////

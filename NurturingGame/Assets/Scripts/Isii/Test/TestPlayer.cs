@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TestPlayer : MonoBehaviour
+public class TestPlayer : PlayerBase
 {
     private static WaitForSeconds _waitForSeconds2 = new WaitForSeconds(2f);
     private Animator animator;
@@ -26,12 +26,12 @@ public class TestPlayer : MonoBehaviour
 
 
 
-    void Start()
+    public override void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    public override void Update()
     {
         Movement();
         MotionUpdate();

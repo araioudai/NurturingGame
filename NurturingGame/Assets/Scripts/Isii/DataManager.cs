@@ -29,7 +29,7 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void InitLoadPlayerData()
     {
-        Debug.Log("InitLoadPlayerData");
+        Debug.Log("InitLoadPlayerData", this);
         string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
 
         if (File.Exists(filePath))
@@ -143,7 +143,7 @@ public class DataManager : MonoBehaviour
     [ContextMenu("SavePlayerData")]
     public void SavePlayerData()
     {
-        Debug.Log("SavePlayerData");
+        Debug.Log("SavePlayerData", this);
 
         // 現在のプレイヤーデータをリストに反映
         playerDataList.playerData[playerNoCurrent] = currentPlayerData;
@@ -228,7 +228,6 @@ public class DataManager : MonoBehaviour
             Debug.LogError("ジョブの初期ステータスデータの読み込みに失敗しました: " + jobHandle, this);
             return;
         }
-
 
         // 初期データを設定するなどの処理を行う
         currentPlayerData = new PlayerData
