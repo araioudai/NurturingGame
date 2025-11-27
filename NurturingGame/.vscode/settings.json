@@ -66,5 +66,8 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "NurturingGame.sln"
+    "dotnet.defaultSolution": "NurturingGame.sln",
+    "cSpell.words": [
+        "Dont"
+    ]
 }

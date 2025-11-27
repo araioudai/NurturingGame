@@ -14,15 +14,6 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string saveFileName = "Players.json"; // 保存ファイル名
 
 
-    void Start()
-    {
-        //LoadPlayerData();
-    }
-
-    void Update()
-    {
-
-    }
 
     /// <summary>
     /// プレイヤーデータの初期化と読込

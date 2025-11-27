@@ -484,6 +484,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f76f32050f146e340ae3b35644016c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestPlayer
+  playerData:
+    name: 
+    job: 0
+    level: 0
+    exp: 0
+    firstStatus:
+      HP: 0
+      MP: 0
+      POW: 0
+      INT: 0
+      DEF: 0
+      AGI: 0
+      LUK: 0
+    addStatus:
+      HP: 0
+      MP: 0
+      POW: 0
+      INT: 0
+      DEF: 0
+      AGI: 0
+      LUK: 0
+    statusPoints: 0
   isJumping: 0
   isBigJump: 0
   isWalking: 0
@@ -1862,7 +1884,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1918428264}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &896668902
@@ -3167,7 +3190,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1235117372}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 889349125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3264,4 +3287,3 @@ SceneRoots:
   - {fileID: 889349125}
   - {fileID: 710088107}
   - {fileID: 737525074}
-  - {fileID: 1918428264}
