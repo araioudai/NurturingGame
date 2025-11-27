@@ -24,6 +24,7 @@ public class NavMeshAgentController : EnemyStatus
     [SerializeField] private float attackInterval;
 
     Vector3 attackPos;                                              //攻撃場所保存用
+    Vector3 firstPoint;
 
     private List<Transform> targetsInRange = new List<Transform>(); //攻撃対象物の座標格納用リスト
     private List<Transform> targetsPoint = new List<Transform>();
@@ -35,6 +36,11 @@ public class NavMeshAgentController : EnemyStatus
     #endregion
 
     #region Unityイベント関数
+    private void Awake()
+    {
+        firstPoint = target.transform.position;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
@@ -65,47 +71,61 @@ public class NavMeshAgentController : EnemyStatus
                 break;
         }
         //デバッグ用HP減らし
-        count -= Time.deltaTime;
+/*        count -= Time.deltaTime;
         if (count <= 0)
         {
             hp -= 25;
             count = 1000;
             SetHp(hp);
-        }
+        }*/
         //Debug.Log(hp);
         //Debug.Log(attackCount);
     }
     #endregion
 
-    #region 当たり判定
-
-    #region すり抜けた時
-    private void OnTriggerEnter(Collider other)
+    #region 攻撃状態管理
+    //範囲内に攻撃対象物がいたら攻撃状態へ
+    public void AddAttackTarget(Transform t)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Obstacles"))
-        {
-            state = ATTACK;                      //アタック状態へ
-            targetsInRange.Add(other.transform); //リストへ攻撃対象物の座標を追加
+        targetsInRange.Add(t);
+        state = ATTACK;
+    }
+
+    //いなければ移動状態へ
+    public void RemoveAttackTarget(Transform t)
+    {
+        targetsInRange.Remove(t);
+        if (targetsInRange.Count == 0) { 
+            state = MOVE;
         }
     }
+
     #endregion
 
-    #region 離れた時
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") || other.CompareTag("Obstacles"))
-        {
-            targetsInRange.Remove(other.transform);
 
-            //範囲内に何もいなければ移動状態へ
-            if (targetsInRange.Count == 0)
-            {
-                state = MOVE;
-            }
+    #region 範囲内にいるターゲットのセット
+    public void AddTargetPoint(Transform t)
+    {
+        targetsPoint.Add(t);
+        SetTarget();
+    }
+
+    public void RemoveTargetPoint(Transform t)
+    {
+        target.transform.position = firstPoint;
+        targetsPoint.Remove(t);
+    }
+
+    //ターゲットをセット
+    private void SetTarget()
+    {
+        Transform closest = GetTargetPoint();
+        if (closest != null)
+        {
+            //対象の位置に最も近い座標(攻撃場所)
+            target.transform.position = closest.position;
         }
     }
-    #endregion
-
     #endregion
 
 
@@ -128,8 +148,6 @@ public class NavMeshAgentController : EnemyStatus
         if (agent != null && agent.enabled)
         {
             agent.isStopped = false;
-            //必要に応じて新しい目的地を設定する
-            // agent.SetDestination(newTargetPosition);
         }
     }
     #endregion
@@ -153,21 +171,21 @@ public class NavMeshAgentController : EnemyStatus
 
     #region 攻撃する場所を返す処理
     //攻撃ポイント
-/*    private Vector3 GetClosestNavMeshPoint(Vector3 sourcePosition, float maxDistance)
-    {
-        NavMeshHit hit;
-        //指定範囲内でNavMesh上の最も近い点をサンプリングする
-        if (NavMesh.SamplePosition(sourcePosition, out hit, maxDistance, NavMesh.AllAreas))
+    /*    private Vector3 GetClosestNavMeshPoint(Vector3 sourcePosition, float maxDistance)
         {
-            //hit.positionがNavMesh上の最も近い地点
-            return hit.position;
-        }
-        //見つからなかった場合は元の位置を返すか、エラー処理を行う
-        return sourcePosition;
-    }*/
+            NavMeshHit hit;
+            //指定範囲内でNavMesh上の最も近い点をサンプリングする
+            if (NavMesh.SamplePosition(sourcePosition, out hit, maxDistance, NavMesh.AllAreas))
+            {
+                //hit.positionがNavMesh上の最も近い地点
+                return hit.position;
+            }
+            //見つからなかった場合は元の位置を返すか、エラー処理を行う
+            return sourcePosition;
+        }*/
     #endregion
 
-    #region 一番近い攻撃対象物の場所を返す処理
+    #region 一番近い攻撃対象物の場所を返す処理(攻撃対象)
     private Transform GetClosestTarget()
     {
         if (targetsInRange.Count == 0) return null;
@@ -190,7 +208,6 @@ public class NavMeshAgentController : EnemyStatus
 
     #endregion
 
-
     #region 攻撃場所にアタックエリアを追従
     void AttackAreaFollow()
     {
@@ -203,5 +220,29 @@ public class NavMeshAgentController : EnemyStatus
         }
     }
     #endregion
+
+    #region 一番近い攻撃対象物の場所を返す処理(移動場所)
+    private Transform GetTargetPoint()
+    {
+        if (targetsPoint.Count == 0) return null;
+
+        Transform closest = targetsPoint[0];
+        float minDist = Vector3.Distance(transform.position, closest.position);
+
+        foreach (var t in targetsPoint)
+        {
+            float dist = Vector3.Distance(transform.position, t.position);
+            if (dist < minDist)
+            {
+                closest = t;
+                minDist = dist;
+            }
+        }
+
+        return closest;
+    }
+
+    #endregion
+
 
 }
