@@ -9,7 +9,7 @@ public class KariBackScene : MonoBehaviour
     void Update()
     {
         // ESCキーでタイトルシーンへ遷移
-        if(Input.GetMouseButtonDown(2) && !isBackToTitle)
+        if((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Escape)) && !isBackToTitle)
         {
             isBackToTitle = true;
             BackToTitleScene();

@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &29231959
 RectTransform:
   m_ObjectHideFlags: 0
@@ -744,7 +744,7 @@ Transform:
   m_GameObject: {fileID: 864230066}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -81.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleManager
   sceneToLoad:
-  - StageScene
+  - GameScene
   - StageScene 1
   - StageScene 2
   sceneLoadButtons:
@@ -915,7 +915,7 @@ MonoBehaviour:
   - {fileID: 29231960}
   - {fileID: 1743016658}
   sceneAsset:
-  - {fileID: 102900000, guid: 759c0e4f38b21fa44b5ec5aa8f4dec6a, type: 3}
+  - {fileID: 102900000, guid: 19f876be88c917842a9877d4a293cd1b, type: 3}
   - {fileID: 102900000, guid: 6dcf3ff6bb4e46a47b87985d574a55b9, type: 3}
   - {fileID: 102900000, guid: d82ff1c8187fa904aadf411cc5508e82, type: 3}
 --- !u!4 &1549259427
@@ -1003,7 +1003,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30BF\u30A4\u30C8\u30EB\u3092\u6B64\u51E6\u306B"
+  m_Text: "\u30BF\u30EF\u30FC\u30C7\u30A3\u30D5\u30A7\u30F3\u30B9"
 --- !u!222 &1589674452
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1743016657
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1192,11 +1192,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 70
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1248,8 +1248,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: -150}
-  m_SizeDelta: {x: 300, y: 80}
+  m_AnchoredPosition: {x: 0, y: -150}
+  m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2098293976
 MonoBehaviour:

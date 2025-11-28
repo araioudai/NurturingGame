@@ -1,24 +1,23 @@
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    #region protected•Ï”
-    [SerializeField] protected int level;       //ƒŒƒxƒ‹
-    [SerializeField] protected int hp;          //‘Ì—Í
-    [SerializeField] protected int mp;          //–‚—Í—Ê
-    [SerializeField] protected int atk;         //UŒ‚—Í
-    [SerializeField] protected int intell;      //–‚–@UŒ‚—Í
-    [SerializeField] protected int def;         //–hŒä—Í
-    [SerializeField] protected int agi;         //‘f‘‚³
-    [SerializeField] protected int rack;        //K‰^’l
+    #region protectedï¿½Ïï¿½
+    [SerializeField] protected int level;       //ï¿½ï¿½ï¿½xï¿½ï¿½
+    [SerializeField] protected int hp;          //ï¿½Ì—ï¿½
+    [SerializeField] protected int mp;          //ï¿½ï¿½ï¿½Í—ï¿½
+    [SerializeField] protected int atk;         //ï¿½Uï¿½ï¿½ï¿½ï¿½
+    [SerializeField] protected int intell;      //ï¿½ï¿½ï¿½@ï¿½Uï¿½ï¿½ï¿½ï¿½
+    [SerializeField] protected int def;         //ï¿½hï¿½ï¿½ï¿½
+    [SerializeField] protected int agi;         //ï¿½fï¿½ï¿½ï¿½ï¿½
+    [SerializeField] protected int rack;        //ï¿½Kï¿½^ï¿½l
 
     #endregion
 
-    #region UnityƒCƒxƒ“ƒgŠÖ”
+    #region Unityï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½Öï¿½
     protected virtual void Awake()
     {
-        //GameManager.Awake() ‚ÌŒã‚ÉŒÄ‚Î‚ê‚é‚©‚çŠmÀ‚É“o˜^
+        //GameManager.Awake() ï¿½ÌŒï¿½ÉŒÄ‚Î‚ï¿½é‚©ï¿½ï¿½mï¿½ï¿½ï¿½É“oï¿½^
         if (GameManager.Instance != null)
         {
             GameManager.Instance.RegisterEnemy(this);
@@ -36,9 +35,9 @@ public class EnemyBase : MonoBehaviour
     }
     #endregion
 
-    #region StartŒÄ‚Ño‚µŠÖ”
+    #region Startï¿½Ä‚Ñoï¿½ï¿½ï¿½Öï¿½
     
-    #region ‰Šú‰»
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     protected virtual void Init()
     {
         
@@ -76,7 +75,7 @@ public class EnemyBase : MonoBehaviour
     #endregion
 
 
-    #region UpdateŒÄ‚Ño‚µŠÖ”
+    #region Updateï¿½Ä‚Ñoï¿½ï¿½ï¿½Öï¿½
     protected virtual void Move()
     {
 
