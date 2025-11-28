@@ -200,6 +200,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3006318554475291914}
   - component: {fileID: 7183030062450084674}
+  - component: {fileID: 1232877910690423283}
+  - component: {fileID: 5980759070203921907}
   m_Layer: 0
   m_Name: IsHit
   m_TagString: Player
@@ -245,6 +247,46 @@ CapsuleCollider:
   m_Height: 1.6495035
   m_Direction: 1
   m_Center: {x: 0, y: 0.32475173, z: 0}
+--- !u!114 &1232877910690423283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129621293475691922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb48373d19b8b0468e96d4bfe5cc5ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitJudgmentPlayer
+  controller: {fileID: 4056313251190383167}
+--- !u!54 &5980759070203921907
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129621293475691922}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3164820731517691094
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +660,7 @@ MonoBehaviour:
   target: {fileID: 7758471253239611360}
   point: {fileID: 4479367567855176171}
   attackArea: 5
-  attackInterval: 2
+  attackInterval: 1.5
 --- !u!195 &7376656707531760452
 NavMeshAgent:
   m_ObjectHideFlags: 0
