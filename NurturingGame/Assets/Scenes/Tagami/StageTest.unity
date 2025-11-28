@@ -461,10 +461,10 @@ MonoBehaviour:
   stageInfo:
   - {fileID: 11400000, guid: 8f62da4123b70ca4ca1f6d1ab9313e8e, type: 2}
   stageObj:
-  - {fileID: 8880885990710024901, guid: e22a01d05580db343b13c3e60fea6520, type: 3}
+  - {fileID: 0}
   - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
-  - {fileID: 3657595836065228149, guid: bc9a546bb4013b94b85c1bd93b4a2292, type: 3}
-  - {fileID: 4921846691123625470, guid: de96d0a3eafbd7147ac8ae645c464599, type: 3}
+  - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
+  - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
   stage: {fileID: 1458750523}
   objInterval: 1
   genPos: {x: 0, y: 0, z: 0}
