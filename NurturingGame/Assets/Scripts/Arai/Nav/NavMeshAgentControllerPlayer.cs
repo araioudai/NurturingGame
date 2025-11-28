@@ -4,7 +4,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshAgentController : EnemyStatus
+public class NavMeshAgentControllerPlayer : EnemyStatus
 {
     #region 定数
     private const int MOVE = 0;   //移動状態
@@ -39,7 +39,7 @@ public class NavMeshAgentController : EnemyStatus
     #region Unityイベント関数
     private void Awake()
     {
-       firstPoint = GameObject.Find("PlayerCastle").transform.position;
+        firstPoint = GameObject.Find("EnemyCastle").transform.position;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,7 +66,7 @@ public class NavMeshAgentController : EnemyStatus
                 StopAgentMovement();
                 
                 AttackAreaFollow();
-                
+
                 AttackInteral();
 
                 //print("こうげき");
@@ -115,7 +115,7 @@ public class NavMeshAgentController : EnemyStatus
 
     public void RemoveTargetPoint(Transform t)
     {
-        target.transform.position = firstPoint;
+        //target.transform.position = firstPoint;
         targetsPoint.Remove(t);
     }
 
@@ -235,12 +235,13 @@ public class NavMeshAgentController : EnemyStatus
         {
             //対象が存在する場合のみ攻撃位置を更新
             attackPos = closest.position;
-            point.transform.position = attackPos;
+            point.transform.position = closest.transform.position;
         }
         else
         {
             //対象がいない場合は攻撃ポイント非表示
             point.SetActive(false);
+            state = MOVE;
         }
     }
     #endregion
@@ -273,4 +274,6 @@ public class NavMeshAgentController : EnemyStatus
         return closest;
     }
     #endregion
+
+
 }

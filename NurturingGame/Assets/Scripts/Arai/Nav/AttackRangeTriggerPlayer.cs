@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class AttackRangeTrigger : MonoBehaviour
+public class AttackRangeTriggerPlayer : MonoBehaviour
 {
     #region private変数
-    [SerializeField] private NavMeshAgentController controller;
+    [SerializeField] private NavMeshAgentControllerPlayer controller;
     #endregion
 
     #region 当たり判定
@@ -11,7 +11,7 @@ public class AttackRangeTrigger : MonoBehaviour
     #region すり抜けた時
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacles"))
         {
             controller.AddAttackTarget(other.transform); //アタック状態へ
         }
@@ -21,7 +21,7 @@ public class AttackRangeTrigger : MonoBehaviour
     #region 離れた時
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacles"))
         {
             controller.RemoveAttackTarget(other.transform); //移動状態へ
         }

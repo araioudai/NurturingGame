@@ -33,10 +33,10 @@ public class EnemyStatus : MonoBehaviour
     }
     #endregion
 
-    #region hpが減った時のバー反映処理
-    protected void SetHp(int hp)
+    #region hpが減った時のバー反映処理(攻撃をくらう)
+    public void SetHp(int attack)
     {
-        this.hp = hp;
+        hp -= attack;
 
         //HP表示用UIのアップデート
         UpdateHPValue();
@@ -61,6 +61,24 @@ public class EnemyStatus : MonoBehaviour
         return maxHp;
     }
 
+    #endregion
+
+    #region 死亡時
+    protected void IsDead()
+    {
+        if(hp <= 0)
+        {
+            //追従しているプレイヤーに登録解除
+/*            var player = FindObjectOfType<NavMeshAgentControllerPlayer>();
+            if (player != null)
+            {
+                player.RemoveAttackTarget(this.transform);
+                player.RemoveTargetPoint(this.transform);
+            }*/
+
+            Destroy(gameObject);
+        }
+    }
     #endregion
 
     #region 死んだらUIを非表示処理
