@@ -186,7 +186,7 @@ MonoBehaviour:
   target: {fileID: 7563973133153977638}
   point: {fileID: 116488927481324106}
   attackArea: 5
-  attackInterval: 2
+  attackInterval: 1.5
 --- !u!195 &5404529736095643645
 NavMeshAgent:
   m_ObjectHideFlags: 0

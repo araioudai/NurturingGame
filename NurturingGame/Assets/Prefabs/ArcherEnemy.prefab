@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b27de4e4dd4584aab32be6ca81511e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPower
-  m_Power: 7
+  m_Power: 9
 --- !u!1 &4296630029573611106
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,7 +839,7 @@ MonoBehaviour:
   target: {fileID: 7472710019668296347}
   point: {fileID: 4215125832339229527}
   attackArea: 20
-  attackInterval: 2
+  attackInterval: 1
 --- !u!195 &4061954541459274508
 NavMeshAgent:
   m_ObjectHideFlags: 0

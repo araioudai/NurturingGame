@@ -9,7 +9,7 @@ public class EnemySpawn : MonoBehaviour
     [Header("生成したい敵オブジェクトセット")]
     [SerializeField] private GameObject charaKnight;  //騎士生成用
     [SerializeField] private GameObject charaArcher;  //弓兵生成用
-    [SerializeField] private GameObject charaPaladin; //パラディン生成用
+    //[SerializeField] private GameObject charaPaladin; //パラディン生成用
     [Header("ステージの敵生成上限")]
     [SerializeField] protected int enemyLimit;        //敵の生成上限設定用
 
@@ -46,20 +46,20 @@ public class EnemySpawn : MonoBehaviour
                     //敵をインスタンス化する(生成する)
                     Instantiate(charaKnight, spawnPosition, Quaternion.identity);
                 }*/
-        StartCoroutine(ApplyLevelNextFrame());
+        //StartCoroutine(ApplyLevelNextFrame());
     }
 
     IEnumerator ApplyLevelNextFrame()
     {
         yield return null; //登録されてから表示するために1フレーム待つ
-        GameManager.Instance.ApplyEnemyLevel();
+        //GameManager.Instance.ApplyEnemyLevel();
     }
 
     // Update is called once per frame
     void Update()
     {
         count += Time.deltaTime;
-        if(count >= 2) { point += 1; count = 0; }
+        if(count >= 5) { point += 1; count = 0; }
         if(point >= 12) { point = 12; }
         Debug.Log(point);
     }
@@ -90,7 +90,7 @@ public class EnemySpawn : MonoBehaviour
     #endregion
 
     #region パラディン生成が押された時の処理
-    public void PushPaladin()
+/*    public void PushPaladin()
     {
         if (point >= 3)
         {
@@ -98,6 +98,6 @@ public class EnemySpawn : MonoBehaviour
             Instantiate(charaPaladin, spawnPosition, Quaternion.identity);
             point -= 3;
         }
-    }
+    }*/
     #endregion
 }
