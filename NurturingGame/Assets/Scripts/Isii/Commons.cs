@@ -34,7 +34,7 @@ namespace Udon
             public string playerName;                   // プレイヤーの名前
             public int resources;                       // プレイヤーの資源
             public TrainingCentre trainingCentre;       // 訓練所データ
-            public MagiciansTower magiciansTower;       // 魔法使いの塔データ
+            public PlayerTC playerTC;                   // プレイヤーの塔データ
         }
 
         [Serializable]
@@ -66,14 +66,14 @@ namespace Udon
         }
 
         [Serializable]
-        public class MagiciansTower
+        public class PlayerTC
         {
-            public int buildingLevel;                           // 魔法使いの塔のレベル
-            public MTLevelUp mtLevelUp;                           // 各スキルのレベルアップ情報
+            public int buildingLevel;                           // プレイヤーの塔のレベル
+            public PlayerTCLevelUp ptcLevelUp;                  // 各スキルのレベルアップ情報
         }
 
         [Serializable]
-        public class MTLevelUp
+        public class PlayerTCLevelUp
         {
             public int HummerLevel;                             // ハンマーのレベル
             public int ToxicLevel;                              // トキシックのレベル
@@ -121,10 +121,10 @@ namespace Udon
                             MageLevel = 0
                         }
                     },
-                    magiciansTower = new MagiciansTower
+                    playerTC = new PlayerTC
                     {
                         buildingLevel = 1,
-                        mtLevelUp = new MTLevelUp
+                        ptcLevelUp = new PlayerTCLevelUp
                         {
                             HummerLevel = 1,
                             ToxicLevel = 0,
@@ -156,28 +156,58 @@ namespace Udon
             public int speed;
             public int skillAttack;
 
-            public States(StatesType type, int hp, int attack, int level)
+            /// <summary>
+            /// Mobステータス設定
+            /// </summary>
+            public void SetStates(StatesType type, JobType jobType, int level)
             {
                 if (type == StatesType.Mob)
                 {
-                    this.hp = mobHpLevelStatesTable[level - 1] + hp;
-                    this.attack = allAttackLevelStatesTable[level - 1] + attack;
-                    this.skillAttack = 0;                                                // モブはスキル攻撃なし
+                    hp = mobHpLevelStatesTable[level];
+                    attack = allAttackLevelStatesTable[level];
+                    skillAttack = 0;                                                // モブはスキル攻撃なし
+
+                    switch (jobType)
+                    {
+                        case JobType.Knight:
+                        case JobType.Paladin:
+                            // 普通速度モブ
+                            this.speed = mobNormalSpeedLevelStatesTable[level];
+                            break;
+                        case JobType.Archer:
+                            // 速いモブ
+                            this.speed = mobFastSpeedLevelStatesTable[level];
+                            break;
+                        case JobType.Mage:
+                            // 遅いモブ
+                            this.speed = mobSlowSpeedLevelStatesTable[level];
+                            break;
+                    }
                 }
-                else if (type == StatesType.Player)
+            }
+
+            /// <summary>
+            /// プレイヤーステータス設定
+            /// </summary>
+            public void SetStates(StatesType type, int level)
+            {
+                if (type == StatesType.Player)
                 {
-                    this.hp = pHpLevelStatesTable[level - 1] + hp;
-                    this.attack = pSkillPowerLevelStatesTable[level - 1] + attack;
-                    this.skillAttack = pSkillPowerLevelStatesTable[level - 1] + attack;
+                    hp = pHpLevelStatesTable[level];
+                    attack = pSkillPowerLevelStatesTable[level];
+                    skillAttack = pSkillPowerLevelStatesTable[level];
+                    speed = pSpeedLevelStatesTable[level];
                 }
             }
         }
+
 
         /// <summary>
         /// モブのレベルごとのステータス上昇値テーブル
         /// </summary>
         public static readonly int[] mobHpLevelStatesTable = new int[]
         {
+            1,      // レベル0
             100,    // レベル1
             150,    // レベル2
             210,    // レベル3
@@ -195,6 +225,7 @@ namespace Udon
         /// </summary>
         public static readonly int[] allAttackLevelStatesTable = new int[]
         {
+            1,      // レベル0
             20,    // レベル1
             30,    // レベル2
             42,    // レベル3
@@ -212,6 +243,7 @@ namespace Udon
         /// </summary>
         public static readonly int[] pSkillPowerLevelStatesTable = new int[]
         {
+            1,      // レベル0
             40,    // レベル1
             60,    // レベル2
             84,    // レベル3
@@ -229,6 +261,7 @@ namespace Udon
         /// </summary>
         public static readonly int[] pHpLevelStatesTable = new int[]
         {
+            1,      // レベル0
             200,    // レベル1
             300,    // レベル2
             420,    // レベル3
@@ -249,6 +282,7 @@ namespace Udon
         /// </summary>
         public static readonly int[] pSpeedLevelStatesTable = new int[]
         {
+            1,      // レベル0
             10,    // レベル1
             12,    // レベル2
             14,    // レベル3
@@ -266,6 +300,7 @@ namespace Udon
         /// </summary>
         public static readonly int[] mobNormalSpeedLevelStatesTable = new int[]
         {
+            1,      // レベル0
             10,    // レベル1
             11,    // レベル2
             12,    // レベル3
@@ -283,16 +318,17 @@ namespace Udon
         /// </summary>
         public static readonly int[] mobSlowSpeedLevelStatesTable = new int[]
         {
-            mobNormalSpeedLevelStatesTable[0] - declineSpeed,       // レベル1
-            mobNormalSpeedLevelStatesTable[1] - declineSpeed,       // レベル2
-            mobNormalSpeedLevelStatesTable[2] - declineSpeed,       // レベル3
-            mobNormalSpeedLevelStatesTable[3] - declineSpeed,       // レベル4
-            mobNormalSpeedLevelStatesTable[4] - declineSpeed,       // レベル5
-            mobNormalSpeedLevelStatesTable[5] - declineSpeed,       // レベル6
-            mobNormalSpeedLevelStatesTable[6] - declineSpeed,       // レベル7
-            mobNormalSpeedLevelStatesTable[7] - declineSpeed,       // レベル8
-            mobNormalSpeedLevelStatesTable[8] - declineSpeed,       // レベル9
-            mobNormalSpeedLevelStatesTable[9] - declineSpeed        // レベル10
+            mobNormalSpeedLevelStatesTable[0],                      // レベル0
+            mobNormalSpeedLevelStatesTable[1]   - declineSpeed,       // レベル1
+            mobNormalSpeedLevelStatesTable[2]   - declineSpeed,       // レベル2
+            mobNormalSpeedLevelStatesTable[3]   - declineSpeed,       // レベル3
+            mobNormalSpeedLevelStatesTable[4]   - declineSpeed,       // レベル4
+            mobNormalSpeedLevelStatesTable[5]   - declineSpeed,       // レベル5
+            mobNormalSpeedLevelStatesTable[6]   - declineSpeed,       // レベル6
+            mobNormalSpeedLevelStatesTable[7]   - declineSpeed,       // レベル7
+            mobNormalSpeedLevelStatesTable[8]   - declineSpeed,       // レベル8
+            mobNormalSpeedLevelStatesTable[9]   - declineSpeed,       // レベル9
+            mobNormalSpeedLevelStatesTable[10]  - declineSpeed        // レベル10
         };
 
         /// <summary>
@@ -300,16 +336,17 @@ namespace Udon
         /// </summary>
         public static readonly int[] mobFastSpeedLevelStatesTable = new int[]
         {
-            mobNormalSpeedLevelStatesTable[0] + increaseSpeed,    // レベル1
-            mobNormalSpeedLevelStatesTable[1] + increaseSpeed,    // レベル2
-            mobNormalSpeedLevelStatesTable[2] + increaseSpeed,    // レベル3
-            mobNormalSpeedLevelStatesTable[3] + increaseSpeed,    // レベル4
-            mobNormalSpeedLevelStatesTable[4] + increaseSpeed,    // レベル5
-            mobNormalSpeedLevelStatesTable[5] + increaseSpeed,    // レベル6
-            mobNormalSpeedLevelStatesTable[6] + increaseSpeed,    // レベル7
-            mobNormalSpeedLevelStatesTable[7] + increaseSpeed,    // レベル8
-            mobNormalSpeedLevelStatesTable[8] + increaseSpeed,    // レベル9
-            mobNormalSpeedLevelStatesTable[9] + increaseSpeed     // レベル10
+            mobNormalSpeedLevelStatesTable[0],                      // レベル0
+            mobNormalSpeedLevelStatesTable[1]   + increaseSpeed,    // レベル1
+            mobNormalSpeedLevelStatesTable[2]   + increaseSpeed,    // レベル2
+            mobNormalSpeedLevelStatesTable[3]   + increaseSpeed,    // レベル3
+            mobNormalSpeedLevelStatesTable[4]   + increaseSpeed,    // レベル4
+            mobNormalSpeedLevelStatesTable[5]   + increaseSpeed,    // レベル5
+            mobNormalSpeedLevelStatesTable[6]   + increaseSpeed,    // レベル6
+            mobNormalSpeedLevelStatesTable[7]   + increaseSpeed,    // レベル7
+            mobNormalSpeedLevelStatesTable[8]   + increaseSpeed,    // レベル8
+            mobNormalSpeedLevelStatesTable[9]   + increaseSpeed,    // レベル9
+            mobNormalSpeedLevelStatesTable[10]  + increaseSpeed     // レベル10
         };
 
         #endregion
@@ -319,46 +356,46 @@ namespace Udon
         public const int buildingMaxLevel = 10; // 最大レベル
         public static readonly int[] buildingLevelUpResourcesTable = new int[]
         {
-            0,          // レベル1
-            1000,       // レベル2
-            3000,       // レベル3
-            6000,       // レベル4
-            10000,      // レベル5
-            15000,      // レベル6
-            21000,      // レベル7
-            28000,      // レベル8
-            36000,      // レベル9
-            45000       // レベル10
+            10000,          // レベル1
+            1000,           // レベル2
+            3000,           // レベル3
+            6000,           // レベル4
+            10000,          // レベル5
+            15000,          // レベル6
+            21000,          // レベル7
+            28000,          // レベル8
+            36000,          // レベル9
+            45000           // レベル10
         };
 
         public const int mobMaxLevel = 10; // モブ最大レベル
         public static readonly int[] mobLevelUpResourcesTable = new int[]
         {
-            0,          // レベル1
-            800,        // レベル2
-            2500,       // レベル3
-            5000,       // レベル4
-            9000,       // レベル5
-            14000,      // レベル6
-            20000,      // レベル7
-            27000,      // レベル8
-            35000,      // レベル9
-            44000       // レベル10
+            10000,          // レベル1
+            800,            // レベル2
+            2500,           // レベル3
+            5000,           // レベル4
+            9000,           // レベル5
+            14000,          // レベル6
+            20000,          // レベル7
+            27000,          // レベル8
+            35000,          // レベル9
+            44000           // レベル10
         };
 
         public const int pSkillMaxLevel = 10; // スキル最大レベル
         public static readonly int[] pSkillLevelUpResourcesTable = new int[]
         {
-            0,          // レベル1
-            500,        // レベル2
-            2000,       // レベル3
-            4000,       // レベル4
-            7000,       // レベル5
-            11000,      // レベル6
-            16000,      // レベル7
-            22000,      // レベル8
-            29000,      // レベル9
-            37000       // レベル10
+            10000,          // レベル1
+            500,            // レベル2
+            2000,           // レベル3
+            4000,           // レベル4
+            7000,           // レベル5
+            11000,          // レベル6
+            16000,          // レベル7
+            22000,          // レベル8
+            29000,          // レベル9
+            37000           // レベル10
         };
         #endregion
     }

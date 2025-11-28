@@ -10,19 +10,41 @@ public class TextManager : MonoBehaviour
     [SerializeField] private GameObject skillPanel;
     [SerializeField] private GameObject jobPanel;
 
+    [SerializeField] private Text playerLevelText;
+    [SerializeField] private Text trainingCenterLevelText;
+
+
+
     /// <summary>
     /// 資源テキスト更新
     /// </summary>
-    public void ResourcesTextUpdate(SaveData data)
-    {
-        resourcesText.text = data.resources.ToString();
-    }
-
-
     public void ResourcesTextUpdate(int resources)
     {
         resourcesText.text = resources.ToString();
     }
+
+    /// <summary>
+    /// プレイヤーレベルテキスト更新
+    /// </summary>
+    public void PlayerLevelTextUpdate(int level)
+    {
+        playerLevelText.text = level.ToString();
+    }
+
+    /// <summary>
+    /// 訓練所レベルテキスト更新
+    /// </summary>
+    public void TrainingCenterLevelTextUpdate(int level)
+    {
+        trainingCenterLevelText.text = level.ToString();
+    }
+
+
+
+
+
+
+
 
     /// <summary>
     /// 初期テキスト更新
@@ -34,16 +56,15 @@ public class TextManager : MonoBehaviour
         skillPanel.SetActive(true);
         jobPanel.SetActive(true);
 
+        PlayerLevelTextUpdate(data.playerTC.buildingLevel);
+        TrainingCenterLevelTextUpdate(data.trainingCentre.buildingLevel);
+
         SkillLevelTextUpdate(0, data);
         JobLevelTextUpdate(1, data);
 
         skillPanel.SetActive(false);
         jobPanel.SetActive(false);
     }
-
-
-
-
 
     /// <summary>
     /// プレイヤースキルレベルテキスト更新
@@ -57,7 +78,7 @@ public class TextManager : MonoBehaviour
         for (int i = 0; i < (int)SkillType.Count; i++)
         {                                       // PList      ImgScroll   Skill1      LvUpBtn     LvText
             Text skillLevelText = Panel.transform.GetChild(0).GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<Text>();
-            skillLevelText.text = "Level " + data.magiciansTower.mtLevelUp.GetSkillLevelText((SkillType)i).ToString();
+            skillLevelText.text = "Level " + data.playerTC.ptcLevelUp.GetSkillLevelText((SkillType)i).ToString();
         }
     }
 

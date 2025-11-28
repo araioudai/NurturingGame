@@ -30,7 +30,7 @@ public class PanelSettings : MonoBehaviour
 
         if (jobPanel.activeSelf)
         {
-            GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData);
+            GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData.resources);
             GetComponent<TextManager>().SkillLevelTextUpdate(0, GetComponent<GameDataManager>().playerData);
         }
 
@@ -45,7 +45,7 @@ public class PanelSettings : MonoBehaviour
 
         if (skillPanel.activeSelf)
         {
-            GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData);
+            GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData.resources);
             GetComponent<TextManager>().JobLevelTextUpdate(1, GetComponent<GameDataManager>().playerData);
         }
 

@@ -3,13 +3,13 @@ using UnityEngine;
 using static Udon.Commons;
 
 [RequireComponent(typeof(TextManager))]
+[RequireComponent(typeof(StatesManager))]
 public class GameDataManager : MonoBehaviour
 {
     [SerializeField] public SaveData playerData;
 
-    [SerializeField] private string playerName = "UnityChan"; // プレイヤー名を指定するための変数
-    [SerializeField] private string saveFileName = "Players.json"; // 保存ファイル名
-
+    [SerializeField] private string playerName; // プレイヤー名を指定するための変数
+[SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
 
     void Start()
     {
@@ -38,12 +38,23 @@ public class GameDataManager : MonoBehaviour
             Debug.Log("データロード: " + filePath, this);
             string json = File.ReadAllText(filePath);
             playerData = JsonUtility.FromJson<SaveData>(json);
+            GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.playerTC.buildingLevel);
+
+            // モブ兵士のステータス設定
+            for (int i = 0; i < (int)JobType.Count; i++)
+            {
+                JobType jobType = (JobType)i;
+                int jobLevel = playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType);
+                GetComponent<StatesManager>().MobStatesSet(StatesType.Mob, jobType, jobLevel);
+            }
         }
         else
         {
             Debug.LogWarning("データファイルが存在しません: " + filePath, this);
             CreateData();
             SaveData();
+            GetComponent<StatesManager>().PlayerStatesInit(playerData);
+            GetComponent<StatesManager>().MobStatesInit(playerData);
         }
 
         GetComponent<TextManager>().InitTextUpdate(playerData);
@@ -96,11 +107,4 @@ public class GameDataManager : MonoBehaviour
             Debug.LogWarning("データファイルが存在しません: " + filePath, this);
         }
     }
-
-
-
-
-
-
-
 }
