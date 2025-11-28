@@ -387,8 +387,8 @@ Canvas:
   m_GameObject: {fileID: 547774159}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 858606449}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -907,17 +907,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleManager
   sceneToLoad:
-  - GameScene
-  - GameScene
-  - GameScene
+  - StageScene
+  - StageScene 1
+  - StageScene 2
   sceneLoadButtons:
   - {fileID: 2098293976}
   - {fileID: 29231960}
   - {fileID: 1743016658}
   sceneAsset:
-  - {fileID: 102900000, guid: 19f876be88c917842a9877d4a293cd1b, type: 3}
-  - {fileID: 102900000, guid: 19f876be88c917842a9877d4a293cd1b, type: 3}
-  - {fileID: 102900000, guid: 19f876be88c917842a9877d4a293cd1b, type: 3}
+  - {fileID: 102900000, guid: 759c0e4f38b21fa44b5ec5aa8f4dec6a, type: 3}
+  - {fileID: 102900000, guid: 6dcf3ff6bb4e46a47b87985d574a55b9, type: 3}
+  - {fileID: 102900000, guid: d82ff1c8187fa904aadf411cc5508e82, type: 3}
 --- !u!4 &1549259427
 Transform:
   m_ObjectHideFlags: 0
