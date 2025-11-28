@@ -59,7 +59,13 @@ public class StageGenerator : MonoBehaviour
 
                 int index = stageInfo[0].map[i][j];
                 if (index >= 0 && index < stageObj.Length)
-                Instantiate(stageObj[index], new Vector3(x,genPos.y,z), Quaternion.identity, stage);
+                {
+                    if (stageObj[index] != null)
+                    {
+                        Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
+                    }
+                }
+               
             }
         }
     }
