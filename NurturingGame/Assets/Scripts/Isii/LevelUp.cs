@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using static Udon.Commons;
 
 [RequireComponent(typeof(TextManager))]
+[RequireComponent(typeof(StatesManager))]
 public class LevelUp : MonoBehaviour
 {
     [SerializeField] SaveData playerData;
@@ -65,6 +66,11 @@ public class LevelUp : MonoBehaviour
                 playerData.resources -= requiredResources;
                 playerData.trainingCentre.buildingLevel++;
                 Debug.Log("兵舎/建物レベルアップ成功！ 新しいレベル: " + playerData.trainingCentre.buildingLevel, this);
+
+                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.trainingCentre.buildingLevel);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
+                GetComponent<TextManager>().TrainingCenterLevelTextUpdate(playerData.trainingCentre.buildingLevel);
+
                 return true;
             }
             else
@@ -151,14 +157,15 @@ public class LevelUp : MonoBehaviour
                 {
                     Debug.LogWarning(jobType.ToString() + "のレベルアップ条件を満たしていません。", this);
 
-                    GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                    GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                     GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
                     return false;
                 }
                 Debug.Log(jobType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
 
-                GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
+                GetComponent<StatesManager>().MobStatesSet(StatesType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
                 return true;
@@ -167,7 +174,7 @@ public class LevelUp : MonoBehaviour
             {
                 Debug.LogWarning("資源が不足しています。必要な資源: " + requiredResources, this);
 
-                GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
                 return false;
@@ -177,7 +184,7 @@ public class LevelUp : MonoBehaviour
         {
             Debug.LogWarning(jobType.ToString() + "は既に最大レベルです。", this);
 
-            GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+            GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
             GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
             return false;
@@ -192,14 +199,19 @@ public class LevelUp : MonoBehaviour
     {
         playerData = FindObjectOfType<GameDataManager>().playerData;
         // プレイヤーレベルアップ
-        if (playerData.magiciansTower.buildingLevel < (int)SkillType.Count)
+        if (playerData.playerTC.buildingLevel < buildingMaxLevel)
         {
-            int requiredResources = buildingLevelUpResourcesTable[playerData.magiciansTower.buildingLevel];
+            int requiredResources = buildingLevelUpResourcesTable[playerData.playerTC.buildingLevel];
             if (playerData.resources >= requiredResources)
             {
                 playerData.resources -= requiredResources;
-                playerData.magiciansTower.buildingLevel++;
-                Debug.Log("プレイヤーレベルアップ成功！ 新しいレベル: " + playerData.magiciansTower.buildingLevel, this);
+                playerData.playerTC.buildingLevel++;
+                Debug.Log("プレイヤーレベルアップ成功！ 新しいレベル: " + playerData.playerTC.buildingLevel, this);
+
+                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.playerTC.buildingLevel);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
+                GetComponent<TextManager>().PlayerLevelTextUpdate(playerData.playerTC.buildingLevel);
+
                 return true;
             }
             else
@@ -227,22 +239,22 @@ public class LevelUp : MonoBehaviour
         switch (skillType)
         {
             case SkillType.Hummer:
-                currentLevel = playerData.magiciansTower.mtLevelUp.HummerLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.HummerLevel;
                 break;
             case SkillType.Toxic:
-                currentLevel = playerData.magiciansTower.mtLevelUp.ToxicLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.ToxicLevel;
                 break;
             case SkillType.Stan:
-                currentLevel = playerData.magiciansTower.mtLevelUp.StanLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.StanLevel;
                 break;
             case SkillType.FireStorm:
-                currentLevel = playerData.magiciansTower.mtLevelUp.FireStormLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.FireStormLevel;
                 break;
             case SkillType.SwordRain:
-                currentLevel = playerData.magiciansTower.mtLevelUp.SwordRainLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.SwordRainLevel;
                 break;
             case SkillType.Heal:
-                currentLevel = playerData.magiciansTower.mtLevelUp.HealLevel;
+                currentLevel = playerData.playerTC.ptcLevelUp.HealLevel;
                 break;
             default:
                 Debug.LogError("未知のスキルタイプ: " + skillType, this);
@@ -260,40 +272,40 @@ public class LevelUp : MonoBehaviour
                 switch (skillType)
                 {
                     case SkillType.Hummer:
-                        playerData.magiciansTower.mtLevelUp.HummerLevel++;
+                        playerData.playerTC.ptcLevelUp.HummerLevel++;
                         break;
                     case SkillType.Toxic:
-                        if (playerData.magiciansTower.buildingLevel >= 2)
+                        if (playerData.playerTC.buildingLevel >= 2)
                         {
-                            playerData.magiciansTower.mtLevelUp.ToxicLevel++;
+                            playerData.playerTC.ptcLevelUp.ToxicLevel++;
                             success = true;
                         }
                         break;
                     case SkillType.Stan:
-                        if (playerData.magiciansTower.buildingLevel >= 3)
+                        if (playerData.playerTC.buildingLevel >= 3)
                         {
-                            playerData.magiciansTower.mtLevelUp.StanLevel++;
+                            playerData.playerTC.ptcLevelUp.StanLevel++;
                             success = true;
                         }
                         break;
                     case SkillType.FireStorm:
-                        if (playerData.magiciansTower.buildingLevel >= 4)
+                        if (playerData.playerTC.buildingLevel >= 4)
                         {
-                            playerData.magiciansTower.mtLevelUp.FireStormLevel++;
+                            playerData.playerTC.ptcLevelUp.FireStormLevel++;
                             success = true;
                         }
                         break;
                     case SkillType.SwordRain:
-                        if (playerData.magiciansTower.buildingLevel >= 5)
+                        if (playerData.playerTC.buildingLevel >= 5)
                         {
-                            playerData.magiciansTower.mtLevelUp.SwordRainLevel++;
+                            playerData.playerTC.ptcLevelUp.SwordRainLevel++;
                             success = true;
                         }
                         break;
                     case SkillType.Heal:
-                        if (playerData.magiciansTower.buildingLevel >= 6)
+                        if (playerData.playerTC.buildingLevel >= 6)
                         {
-                            playerData.magiciansTower.mtLevelUp.HealLevel++;
+                            playerData.playerTC.ptcLevelUp.HealLevel++;
                             success = true;
                         }
                         break;
@@ -302,14 +314,14 @@ public class LevelUp : MonoBehaviour
                 {
                     Debug.LogWarning(skillType.ToString() + "のレベルアップ条件を満たしていません。", this);
 
-                    GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                    GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                     GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
 
                     return false;
                 }
                 Debug.Log(skillType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
 
-                GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
 
                 return true;
@@ -318,7 +330,7 @@ public class LevelUp : MonoBehaviour
             {
                 Debug.LogWarning("資源が不足しています。必要な資源: " + requiredResources, this);
 
-                GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+                GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
 
                 return false;
@@ -328,7 +340,7 @@ public class LevelUp : MonoBehaviour
         {
             Debug.LogWarning(skillType.ToString() + "は既に最大レベルです。", this);
 
-            GetComponent<TextManager>().ResourcesTextUpdate(playerData);
+            GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
             GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
 
             return false;
