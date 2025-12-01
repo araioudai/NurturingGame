@@ -11,29 +11,31 @@ public class StageEditor : EditorWindow
     private SerializedObject serializedObject;
     private TextAsset csvFile;
 
-    private Vector2 scroll;     // ?X?N???[???p
+    private Vector2 scroll;     // スクロール用
 
-    private int cellSize = 32;  // ?Z???????
+    private int cellSize = 32;  // セルの大きさ
     private bool isMouseDown = false;
-    private int currentPaintValue = 0; // ?I???^?C???l
+    private int currentPaintValue = 0; // 選択中のタイル値
 
     private Color[] colors;
+
     private void OnEnable()
     {
         colors = new Color[]
-       {
+        {
             new Color(0.59f, 0.29f, 0.0f),  // GROUND
             new Color(1f, 1f, 0.3f),        // ROAD
             new Color(0.3f, 1f, 0.3f),      // START
             new Color(1f, 0.3f, 0.3f),      // GOAL
-       };
+            new Color(0.3f, 0.3f, 1f),      // TOWER
+            new Color(1f, 1f, 1f),          // OBSTACLE
+        };
 
-        wantsLessLayoutEvents = true;  // ???C?A?E?g?C?x???g??
-        wantsMouseMove = false;        // ?}?E?X???[?u??
+        wantsLessLayoutEvents = true;  // Layoutイベント削減
+        wantsMouseMove = false;        // マウスムーブイベント不要
     }
 
     [MenuItem("Window/Stage Editor")]
-
     public static void Open()
     {
         GetWindow<StageEditor>("Stage Editor");
@@ -47,33 +49,41 @@ public class StageEditor : EditorWindow
         if (e.type == EventType.MouseUp)
             isMouseDown = false;
 
-        // csvFile?I??.
+        // csvFile 選択
         StageInfo newData = (StageInfo)EditorGUILayout.ObjectField("csvFile", stageInfo, typeof(StageInfo), false);
-        
-        // ?I?????????f?[?^????????.
-        if(newData != stageInfo)
+
+        // 新しいデータに変更があれば差し替え
+        if (newData != stageInfo)
         {
             stageInfo = newData;
             serializedObject = (stageInfo != null) ? new SerializedObject(stageInfo) : null;
         }
 
-        // csvFile??serializedObject??null???l????.
+        // 何も選択されていない
         if (stageInfo == null || serializedObject == null) return;
 
         GUILayout.Space(10);
 
-        // csvFile???W?t?B?[???h.
+        // プロパティを同期
         serializedObject.Update();
 
-        int oldLines = stageInfo.lines;
-        int oldColumns = stageInfo.columns;
+        // 必ず1回だけ取得する
+        var propLines = serializedObject.FindProperty("lines");
+        var propColumns = serializedObject.FindProperty("columns");
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("lines"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("columns"));
+        // Apply前の値を保存
+        int oldLines = propLines.intValue;
+        int oldColumns = propColumns.intValue;
 
-        // ???.
+        // Inspector に表示
+        EditorGUILayout.PropertyField(propLines);
+        EditorGUILayout.PropertyField(propColumns);
+
+
+        // 適用
         serializedObject.ApplyModifiedProperties();
 
+        // 行数・列数が変わったらリサイズ
         if ((stageInfo.lines != oldLines) || (stageInfo.columns != oldColumns))
         {
             ResizeMap(stageInfo);
@@ -85,18 +95,16 @@ public class StageEditor : EditorWindow
         if (stageInfo.csv == null) return;
         csvFile = stageInfo.csv;
 
-        // ??????{?^????????????.
+        // CSV 読み込みボタン
         if (GUILayout.Button("CSV読込"))
         {
-            // ?????????
             ImportCSV(csvFile, stageInfo);
             Repaint();
         }
 
-        // ????{?^????????????.
+        // CSV 書き出しボタン
         if (GUILayout.Button("CSV書出"))
         {
-            // ???????.
             Export(stageInfo);
         }
 
@@ -104,16 +112,15 @@ public class StageEditor : EditorWindow
 
         GUILayout.Space(30);
 
-        // ?^?C???I??
+        // タイル選択
         EditorGUILayout.BeginHorizontal();
 
         GUIStyle style = new GUIStyle(GUI.skin.button);
         for (int i = 0; i < colors.Length; i++)
         {
-            
             style.normal.textColor = Color.black;
 
-            // ?I??^?C???????????
+            // 選択タイルは明るくする
             Color c = colors[i];
             if (i == currentPaintValue)
             {
@@ -124,7 +131,7 @@ public class StageEditor : EditorWindow
             Color prev = GUI.backgroundColor;
             GUI.backgroundColor = c;
 
-            if (GUILayout.Button(((StageInfo.Info)i).ToString(), style, GUILayout.Height(30)))
+            if (GUILayout.Button(((Info)i).ToString(), style, GUILayout.Height(30)))
             {
                 currentPaintValue = i;
             }
@@ -135,8 +142,6 @@ public class StageEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         DrawGrid();
-
-
     }
 
     private void DrawGrid()
@@ -172,16 +177,15 @@ public class StageEditor : EditorWindow
         EditorGUI.DrawRect(rect, cellColor);
 
         Color border = Color.black;
-        EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, 1), border); // ???
-        EditorGUI.DrawRect(new Rect(rect.x, rect.yMax, rect.width, 1), border); // ????
-        EditorGUI.DrawRect(new Rect(rect.x, rect.y, 1, rect.height), border); // ????
-        EditorGUI.DrawRect(new Rect(rect.xMax - 1, rect.y, 1, rect.height), border); // ?E??
+        EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, 1), border);             // 上枠線
+        EditorGUI.DrawRect(new Rect(rect.x, rect.yMax, rect.width, 1), border);          // 下枠線
+        EditorGUI.DrawRect(new Rect(rect.x, rect.y, 1, rect.height), border);            // 左枠線
+        EditorGUI.DrawRect(new Rect(rect.xMax - 1, rect.y, 1, rect.height), border);     // 右枠線
 
-
-        // ?h???b?O?h??
+        // ドラッグ中の描画処理
         if (rect.Contains(Event.current.mousePosition))
         {
-            // ???N???b?N or ?h???b?O??
+            // クリック or ドラッグ時
             if (isMouseDown)
             {
                 stageInfo.map[y][x] = currentPaintValue;
@@ -191,10 +195,11 @@ public class StageEditor : EditorWindow
             }
         }
     }
+
     private static void ImportCSV(TextAsset csv, StageInfo info)
     {
-        string[] lines = csv.text.Replace("\r", "").Split('\n').
-            Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
+        string[] lines = csv.text.Replace("\r", "").Split('\n')
+            .Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         if (lines.Length == 0) return;
 
         int row = lines.Length;
@@ -217,10 +222,10 @@ public class StageEditor : EditorWindow
         EditorUtility.SetDirty(info);
         AssetDatabase.SaveAssets();
 
-        Debug.Log("CSV ??????????I");
+        Debug.Log("CSV を読み込みました");
     }
 
-    // StageInfo ?? CSV ???
+    // StageInfo を CSV に書き出し
     public static void Export(StageInfo stageInfo)
     {
         string path = EditorUtility.SaveFilePanel(
@@ -252,7 +257,7 @@ public class StageEditor : EditorWindow
         }
 
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-        Debug.Log($"CSV ???????: {path}");
+        Debug.Log($"CSV を保存しました: {path}");
 
         AssetDatabase.Refresh();
     }
@@ -267,14 +272,17 @@ public class StageEditor : EditorWindow
 
             for (int x = 0; x < info.columns; x++)
             {
-                if (info.map != null && y < info.map.Length && info.map[y] != null && x < info.map[y].Length)
+                if (info.map != null &&
+                    y < info.map.Length &&
+                    info.map[y] != null &&
+                    x < info.map[y].Length)
                 {
-                    // ??????l???R?s?[
+                    // 既存の値をコピー
                     newMap[y][x] = info.map[y][x];
                 }
                 else
                 {
-                    // ?V?????????? GROUND ??????
+                    // 新しい部分は GROUND にする
                     newMap[y][x] = (int)Info.GROUND;
                 }
             }

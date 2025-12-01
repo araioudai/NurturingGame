@@ -1,20 +1,25 @@
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using static StageInfo;
 
 public class StageGenerator : MonoBehaviour
 {
     public StageInfo[] stageInfo;
     public GameObject[] stageObj;
     public Transform stage;
+    public int stageNow = 0;
 
     [SerializeField] float objInterval = 2;
     [SerializeField] Vector3 genPos = Vector3.zero;
+
+    const float rote = 90;
 
     void Awake()
     {
         if (stageInfo != null)
         {
-            ImportCSV(stageInfo[0]);
+            ImportCSV(stageInfo[stageNow]);
             Generator();
         }
     }
@@ -50,19 +55,31 @@ public class StageGenerator : MonoBehaviour
 
     private void Generator()
     {
-        for(int i = 0; i < stageInfo[0].lines;  i++)
+        for(int i = 0; i < stageInfo[stageNow].lines;  i++)
         {
-            for(int j = 0; j < stageInfo[0].columns; j++)
+            for(int j = 0; j < stageInfo[stageNow].columns; j++)
             {
                 float x = genPos.x + j * objInterval;
                 float z = genPos.z - i * objInterval;
 
-                int index = stageInfo[0].map[i][j];
+                int index = stageInfo[stageNow].map[i][j];
                 if (index >= 0 && index < stageObj.Length)
                 {
                     if (stageObj[index] != null)
                     {
-                        Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
+                        
+                        if(index == (int)Info.START)
+                        {
+                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote,0,-rote), stage);
+                        }
+                        else if(index == (int)Info.GOAL)
+                        {
+                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote, 0, rote), stage);
+                        }
+                        else
+                        {
+                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
+                        }
                     }
                 }
                
