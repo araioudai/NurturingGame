@@ -4,18 +4,18 @@ using static Udon.Commons;
 public class HangOvers : MonoBehaviour
 {
     #region 持ち越しデータ
-    [SerializeField] public SaveData playerData;
+    [SerializeField] public States states;
     #endregion
 
 
-    public void SetData(SaveData data)
+    public void SetData(States data)
     {
-        playerData = data;
+        states = data;
     }
 
-    public SaveData GetData()
+    public States GetData()
     {
-        return playerData;
+        return states;
     }
 
 }

@@ -124,7 +124,6 @@ public class LevelUp : MonoBehaviour
             int requiredResources = mobLevelUpResourcesTable[currentLevel];
             if (playerData.resources >= requiredResources)
             {
-                playerData.resources -= requiredResources;
                 switch (jobType)
                 {
                     case JobType.Knight:
@@ -164,6 +163,7 @@ public class LevelUp : MonoBehaviour
                 }
                 Debug.Log(jobType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
 
+                playerData.resources -= requiredResources;
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<StatesManager>().MobStatesSet(StatesType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
@@ -268,7 +268,6 @@ public class LevelUp : MonoBehaviour
             int requiredResources = mobLevelUpResourcesTable[currentLevel];
             if (playerData.resources >= requiredResources)
             {
-                playerData.resources -= requiredResources;
                 switch (skillType)
                 {
                     case SkillType.Hummer:
@@ -320,6 +319,8 @@ public class LevelUp : MonoBehaviour
                     return false;
                 }
                 Debug.Log(skillType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
+
+                playerData.resources -= requiredResources;
 
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
