@@ -19,4 +19,5 @@ public class StageInfo : ScriptableObject
     public int lines;
     public int columns;
     public int[][] map;
+    public GameObject[] stageObj;
 }

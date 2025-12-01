@@ -6,9 +6,8 @@ using static StageInfo;
 public class StageGenerator : MonoBehaviour
 {
     public StageInfo[] stageInfo;
-    public GameObject[] stageObj;
     public Transform stage;
-    public int stageNow = 0;
+    public int stageIndex = 0;
 
     [SerializeField] float objInterval = 2;
     [SerializeField] Vector3 genPos = Vector3.zero;
@@ -19,7 +18,7 @@ public class StageGenerator : MonoBehaviour
     {
         if (stageInfo != null)
         {
-            ImportCSV(stageInfo[stageNow]);
+            ImportCSV(stageInfo[stageIndex]);
             Generator();
         }
     }
@@ -55,34 +54,36 @@ public class StageGenerator : MonoBehaviour
 
     private void Generator()
     {
-        for(int i = 0; i < stageInfo[stageNow].lines;  i++)
+        StageInfo currentStage = stageInfo[stageIndex];
+
+        for (int i = 0; i < currentStage.lines; i++)
         {
-            for(int j = 0; j < stageInfo[stageNow].columns; j++)
+            for (int j = 0; j < currentStage.columns; j++)
             {
                 float x = genPos.x + j * objInterval;
                 float z = genPos.z - i * objInterval;
 
-                int index = stageInfo[stageNow].map[i][j];
-                if (index >= 0 && index < stageObj.Length)
+                int index = currentStage.map[i][j];
+                if (index >= 0 && index < currentStage.stageObj.Length)
                 {
-                    if (stageObj[index] != null)
+                    if (currentStage.stageObj[index] != null)
                     {
-                        
-                        if(index == (int)Info.START)
+
+                        if (index == (int)Info.START)
                         {
-                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote,0,-rote), stage);
+                            Instantiate(currentStage.stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote, 0, -rote), stage);
                         }
-                        else if(index == (int)Info.GOAL)
+                        else if (index == (int)Info.GOAL)
                         {
-                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote, 0, rote), stage);
+                            Instantiate(currentStage.stageObj[index], new Vector3(x, genPos.y, z), Quaternion.Euler(-rote, 0, rote), stage);
                         }
                         else
                         {
-                            Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
+                            Instantiate(currentStage.stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
                         }
                     }
                 }
-               
+
             }
         }
     }
