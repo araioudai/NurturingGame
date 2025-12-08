@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +9,22 @@ using UnityEngine.UI;
 public class PanelSettings : MonoBehaviour
 {
     #region Panel Settings
+    [Header("パネル設定")]
+    [SerializeField] float alphaSet;
+    [SerializeField] float alphaSpeed;
+
     [Header("モブ兵士パネル")]
     [SerializeField] Button jobPanelButton;
+    [SerializeField] GameObject jobPanels;
     [SerializeField] GameObject jobPanel;
+    GameObject jobBG;
     [SerializeField] Button jobPanelCloseButton;
 
     [Header("プレイヤースキルパネル")]
     [SerializeField] Button skillPanelButton;
+    [SerializeField] GameObject skillPanels;
     [SerializeField] GameObject skillPanel;
+    GameObject skillBG;
     [SerializeField] Button skillPanelCloseButton;
 
     [Header("アニメーション")]
@@ -37,10 +46,28 @@ public class PanelSettings : MonoBehaviour
 
     void Start()
     {
+        skillPanels.SetActive(true);
+        jobPanels.SetActive(true);
+
+        ObjectInit();
         ButtonInit();
         AnimationInit();
-        skillPanel.SetActive(false);
-        jobPanel.SetActive(false);
+        skillPanels.SetActive(false);
+        jobPanels.SetActive(false);
+    }
+
+    /// <summary>
+    /// Object初期設定
+    /// </summary>
+    void ObjectInit()
+    {
+        // BG
+        jobBG = jobPanels.transform.GetChild(0).gameObject;
+        skillBG = skillPanels.transform.GetChild(0).gameObject;
+
+        // Panel
+        // jobPanel = jobPanels.transform.GetChild(1).gameObject;
+        // skillPanel = skillPanels.transform.GetChild(1).gameObject;
     }
 
     /// <summary>
@@ -53,6 +80,10 @@ public class PanelSettings : MonoBehaviour
 
         jobPanelCloseButton.onClick.AddListener(() => JobPanelSet());
         skillPanelCloseButton.onClick.AddListener(() => SkillPanelSet());
+
+        // Close
+        jobBG.GetComponent<Button>().onClick.AddListener(() => JobPanelSet());
+        skillBG.GetComponent<Button>().onClick.AddListener(() => SkillPanelSet());
     }
 
     /// <summary>
@@ -74,13 +105,13 @@ public class PanelSettings : MonoBehaviour
     {
         if(transformation)
             return;
-
-        if (!jobPanel.activeSelf && !skillPanelOpen)
+        if (!jobPanels.activeSelf && !skillPanelOpen)
         {
             // これから開くとき
             // OnOff切り替え
             jobPanelOpen = true;
-            jobPanel.SetActive(true);
+            jobPanels.SetActive(true);
+            StartCoroutine(EnableBGShadowUpdate(jobBG));
             GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData.resources);
             GetComponent<TextManager>().SkillLevelTextUpdate(0, GetComponent<GameDataManager>().playerData);
 
@@ -98,9 +129,10 @@ public class PanelSettings : MonoBehaviour
         if(skillPanelOpen)
             return;
         // これから閉じるとき
+        StartCoroutine(DisableBGShadowUpdate(jobBG));
         jobAnimator.Play(jobPanelAnimationClose.name);
         // アニメーションが終了したらパネルを非表示にする
-        StartCoroutine(DisablePanelAfterAnimation(jobPanel, jobPanelAnimationClose.length));
+        StartCoroutine(DisablePanelAfterAnimation(jobPanels, jobPanelAnimationClose.length));
     }
 
     /// <summary>
@@ -111,11 +143,12 @@ public class PanelSettings : MonoBehaviour
         if(transformation)
             return;
 
-        if (!skillPanel.activeSelf && !jobPanelOpen)
+        if (!skillPanels.activeSelf && !jobPanelOpen)
         {
             // これから開くとき
             skillPanelOpen = true;
-            skillPanel.SetActive(true);
+            skillPanels.SetActive(true);
+            StartCoroutine(EnableBGShadowUpdate(skillBG));
             GetComponent<TextManager>().ResourcesTextUpdate(GetComponent<GameDataManager>().playerData.resources);
             GetComponent<TextManager>().JobLevelTextUpdate(1, GetComponent<GameDataManager>().playerData);
 
@@ -134,10 +167,60 @@ public class PanelSettings : MonoBehaviour
             return;
 
         // これから閉じるとき
+        StartCoroutine(DisableBGShadowUpdate(skillBG));
         skillAnimator.Play(skillPanelAnimationClose.name);
         // アニメーションが終了したらパネルを非表示にする
-        StartCoroutine(DisablePanelAfterAnimation(skillPanel, skillPanelAnimationClose.length));
+        StartCoroutine(DisablePanelAfterAnimation(skillPanels, skillPanelAnimationClose.length));
     }
+
+    IEnumerator EnableBGShadowUpdate(GameObject bg)
+    {
+        Image image = bg.GetComponent<Image>();
+        image.color = new Vector4(0, 0, 0, 0);
+        float nowAlpha = 0;
+
+        for(;;)
+        {
+            nowAlpha += alphaSpeed / 255f;
+            image.color = new Vector4(0, 0, 0, nowAlpha);
+
+            if(nowAlpha >= 140f / 255f)
+                break;
+
+            yield return new WaitForSeconds(1f/60f);
+        }
+
+        image.color = new Vector4(0, 0, 0, 150f / 255f);
+    }
+
+    IEnumerator DisableBGShadowUpdate(GameObject bg)
+    {
+        Image image = bg.GetComponent<Image>();
+        image.color = new Vector4(0, 0, 0, 150f / 255f);
+        float nowAlpha = 150f / 255f;
+
+        for(;;)
+        {
+            nowAlpha -= alphaSpeed / 255f;
+            image.color = new Vector4(0, 0, 0, nowAlpha);
+
+            if(nowAlpha <= 20f / 255f)
+                break;
+
+            yield return new WaitForSeconds(1f/60f);
+        }
+
+        image.color = new Vector4(0, 0, 0, 0);
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -153,9 +236,9 @@ public class PanelSettings : MonoBehaviour
         panel.SetActive(false);
         transformation = false;
 
-        if(panel == jobPanel)
+        if(panel == jobPanels)
             jobPanelOpen = false;
-        else if(panel == skillPanel)
+        else if(panel == skillPanels)
             skillPanelOpen = false;
     }
 

@@ -13,6 +13,10 @@ public class TextManager : MonoBehaviour
     [SerializeField] private Text playerLevelText;
     [SerializeField] private Text trainingCenterLevelText;
 
+    [SerializeField] private Text skillLevelMaxText;
+    [SerializeField] private Text jobLevelMaxText;
+
+
 
 
     /// <summary>
@@ -20,7 +24,7 @@ public class TextManager : MonoBehaviour
     /// </summary>
     public void ResourcesTextUpdate(int resources)
     {
-        resourcesText.text = resources.ToString();
+        resourcesText.text = resources.ToString("#,0");
     }
 
     /// <summary>
@@ -28,7 +32,7 @@ public class TextManager : MonoBehaviour
     /// </summary>
     public void PlayerLevelTextUpdate(int level)
     {
-        playerLevelText.text = level.ToString();
+        playerLevelText.text = level.ToString("#,0");
     }
 
     /// <summary>
@@ -36,14 +40,8 @@ public class TextManager : MonoBehaviour
     /// </summary>
     public void TrainingCenterLevelTextUpdate(int level)
     {
-        trainingCenterLevelText.text = level.ToString();
+        trainingCenterLevelText.text = level.ToString("#,0");
     }
-
-
-
-
-
-
 
 
     /// <summary>
@@ -62,8 +60,7 @@ public class TextManager : MonoBehaviour
         SkillLevelTextUpdate(0, data);
         JobLevelTextUpdate(1, data);
 
-        skillPanel.SetActive(false);
-        jobPanel.SetActive(false);
+        LevelMaxText();
     }
 
     /// <summary>
@@ -77,8 +74,8 @@ public class TextManager : MonoBehaviour
         GameObject Panel = panelType == 0 ? skillPanel : jobPanel;
         for (int i = 0; i < (int)SkillType.Count; i++)
         {                                       // PList      ImgScroll   Skill1      LvUpBtn     LvText
-            Text skillLevelText = Panel.transform.GetChild(0).GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<Text>();
-            skillLevelText.text = "Level " + data.playerTC.ptcLevelUp.GetSkillLevelText((SkillType)i).ToString();
+            Text skillLevelText = Panel.transform.GetChild(1).GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<Text>();
+            skillLevelText.text = "Level " + data.playerTC.ptcLevelUp.GetSkillLevelText((SkillType)i).ToString("#,0");
         }
     }
 
@@ -93,12 +90,19 @@ public class TextManager : MonoBehaviour
         GameObject Panel = panelType == 0 ? skillPanel : jobPanel;
         for (int i = 0; i < (int)JobType.Count; i++)
         {                                       // PList    ImgScroll   Job1        LvUpBtn     LvText
-            Text jobLevelText = Panel.transform.GetChild(0).GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<Text>();
-            jobLevelText.text = "Level " + data.trainingCentre.tcLevelUp.GetJobLevelText((JobType)i).ToString();
+            Text jobLevelText = Panel.transform.GetChild(1).GetChild(0).GetChild(i).GetChild(1).GetChild(0).GetComponent<Text>();
+            jobLevelText.text = "Level " + data.trainingCentre.tcLevelUp.GetJobLevelText((JobType)i).ToString("#,0");
         }
     }
 
-
+    /// <summary>
+    /// 最大レベルテキスト更新
+    /// </summary>
+    void LevelMaxText()
+    {
+        jobLevelMaxText.text = "\n/" + ((int)JobType.Count).ToString();
+        skillLevelMaxText.text = "\n/" + buildingMaxLevel; // 最大レベル
+    }
 
 
 
