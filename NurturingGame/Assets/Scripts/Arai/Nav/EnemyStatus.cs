@@ -3,22 +3,22 @@ using UnityEngine.UI;
 
 public class EnemyStatus : MonoBehaviour
 {
-    #region private•Ï”
-    [Header("Å‘åHP")]
+    #region privateï¿½Ïï¿½
+    [Header("ï¿½Å‘ï¿½HP")]
     [SerializeField] protected int maxHp = 100;
-    [Header("HP(ƒo[—p)")]
+    [Header("HP(ï¿½oï¿½[ï¿½p)")]
     [SerializeField] protected int hp;
-    [Header("UŒ‚—Í")]
+    [Header("ï¿½Uï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] protected int attackPower = 1;
-    [Header("HPUIƒLƒƒƒ“ƒoƒX")]
+    [Header("HPUIï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½oï¿½X")]
     [SerializeField] protected GameObject HPUI;
-    [Header("HPBariƒXƒ‰ƒCƒ_[j")]
+    [Header("HPBarï¿½iï¿½Xï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½j")]
     [SerializeField] protected GameObject hpSliderUI;
     protected Slider hpSlider;
 
     #endregion
 
-    #region UnityƒCƒxƒ“ƒgŠÖ”
+    #region Unityï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½Öï¿½
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -33,24 +33,24 @@ public class EnemyStatus : MonoBehaviour
     }
     #endregion
 
-    #region hp‚ªŒ¸‚Á‚½‚Ìƒo[”½‰fˆ—(UŒ‚‚ğ‚­‚ç‚¤)
+    #region hpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒoï¿½[ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½(ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚¤)
     public void SetHp(int attack)
     {
         hp -= attack;
 
-        //HP•\¦—pUI‚ÌƒAƒbƒvƒf[ƒg
+        //HPï¿½\ï¿½ï¿½ï¿½pUIï¿½ÌƒAï¿½bï¿½vï¿½fï¿½[ï¿½g
         UpdateHPValue();
 
-        //€–S‚µ‚Ä‚½‚ç
+        //ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
         if (hp <= 0)
         {
-            //HP•\¦—pUI‚ğ”ñ•\¦‚É‚·‚é
+            //HPï¿½\ï¿½ï¿½ï¿½pUIï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
             HideStatusUI();
         }
     }
     #endregion
 
-    #region GetŠÖ”
+    #region Getï¿½Öï¿½
     protected int GetHp()
     {
         return hp;
@@ -63,12 +63,12 @@ public class EnemyStatus : MonoBehaviour
 
     #endregion
 
-    #region €–S
+    #region ï¿½ï¿½ï¿½Sï¿½ï¿½
     protected void IsDead()
     {
         if(hp <= 0)
         {
-            //’Ç]‚µ‚Ä‚¢‚éƒvƒŒƒCƒ„[‚É“o˜^‰ğœ
+            //ï¿½Ç]ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½É“oï¿½^ï¿½ï¿½ï¿½ï¿½
 /*            var player = FindObjectOfType<NavMeshAgentControllerPlayer>();
             if (player != null)
             {
@@ -81,14 +81,14 @@ public class EnemyStatus : MonoBehaviour
     }
     #endregion
 
-    #region €‚ñ‚¾‚çUI‚ğ”ñ•\¦ˆ—
+    #region ï¿½ï¿½ï¿½ñ‚¾‚ï¿½UIï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     protected void HideStatusUI()
     {
         HPUI.SetActive(false);
     }
     #endregion
 
-    #region HP•\¦—pUI‚ÌƒAƒbƒvƒf[ƒgˆ—
+    #region HPï¿½\ï¿½ï¿½ï¿½pUIï¿½ÌƒAï¿½bï¿½vï¿½fï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½
     protected void UpdateHPValue()
     {
         hpSlider.value = (float)GetHp() / (float)GetMaxHp();

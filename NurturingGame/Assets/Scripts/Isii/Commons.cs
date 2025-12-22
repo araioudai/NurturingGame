@@ -142,31 +142,31 @@ namespace Udon
 
         #region  States
 
-        public enum StatesType
+        public enum StatusType
         {
             Mob,
             Player
         }
 
         [Serializable]
-        public class States
+        public class Status
         {
             public int hp;
             public int attack;
-            public int attackSpeed;
+            public int attackInterval;
             public int speed;
             public int skillAttack;
 
             /// <summary>
             /// Mobステータス設定
             /// </summary>
-            public void SetStates(StatesType type, JobType jobType, int level)
+            public void SetStates(StatusType type, JobType jobType, int level)
             {
-                if (type == StatesType.Mob)
+                if (type == StatusType.Mob)
                 {
                     hp = mobHpLevelStatesTable[level];
                     attack = allAttackLevelStatesTable[level];
-                    attackSpeed = 1;                                                // モブは攻撃速度固定
+                    attackInterval = 1;                                             // モブは攻撃速度固定
                     skillAttack = 0;                                                // モブはスキル攻撃なし
 
                     switch (jobType)
@@ -191,13 +191,13 @@ namespace Udon
             /// <summary>
             /// プレイヤーステータス設定
             /// </summary>
-            public void SetStates(StatesType type, int level)
+            public void SetStates(StatusType type, int level)
             {
-                if (type == StatesType.Player)
+                if (type == StatusType.Player)
                 {
                     hp = pHpLevelStatesTable[level];
                     attack = pSkillPowerLevelStatesTable[level];
-                    attackSpeed = 1;                                                // プレイヤーは攻撃速度固定
+                    attackInterval = 1;                                                // プレイヤーは攻撃速度固定
                     skillAttack = pSkillPowerLevelStatesTable[level];
                     speed = pSpeedLevelStatesTable[level];
                 }

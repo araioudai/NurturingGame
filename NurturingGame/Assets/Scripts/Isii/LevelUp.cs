@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using static Udon.Commons;
 
 [RequireComponent(typeof(TextManager))]
-[RequireComponent(typeof(StatesManager))]
+[RequireComponent(typeof(StatusManager))]
 public class LevelUp : MonoBehaviour
 {
     [SerializeField] SaveData playerData;
@@ -66,7 +66,7 @@ public class LevelUp : MonoBehaviour
                 playerData.trainingCentre.buildingLevel++;
                 Debug.Log("兵舎/建物レベルアップ成功！ 新しいレベル: " + playerData.trainingCentre.buildingLevel, this);
 
-                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.trainingCentre.buildingLevel);
+                GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.trainingCentre.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().TrainingCenterLevelTextUpdate(playerData.trainingCentre.buildingLevel);
 
@@ -163,7 +163,7 @@ public class LevelUp : MonoBehaviour
 
                 playerData.resources -= requiredResources;
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
-                GetComponent<StatesManager>().MobStatesSet(StatesType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
+                GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
                 return true;
@@ -205,7 +205,7 @@ public class LevelUp : MonoBehaviour
                 playerData.playerTC.buildingLevel++;
                 Debug.Log("プレイヤーレベルアップ成功！ 新しいレベル: " + playerData.playerTC.buildingLevel, this);
 
-                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.playerTC.buildingLevel);
+                GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.playerTC.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().PlayerLevelTextUpdate(playerData.playerTC.buildingLevel);
 
