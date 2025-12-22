@@ -10,31 +10,6 @@ public class HangOvers : MonoBehaviour
     [HideInInspector] public List<Status> mobStatus = new();
     #endregion
 
-    void Awake()
-    {
-        if(TryGetComponent<EnemySpawn>(out var enemySpawn))
-        {
-            enemySpawn.charaKnight.GetComponent<NavMeshAgentControllerPlayer>().maxHp = mobStatus[(int)JobType.Knight].hp;
-            enemySpawn.charaKnight.GetComponent<NavMeshAgentControllerPlayer>().attackPower = mobStatus[(int)JobType.Knight].attack;
-            enemySpawn.charaKnight.GetComponent<NavMeshAgentControllerPlayer>().attackInterval = mobStatus[(int)JobType.Archer].attackInterval;
-
-            enemySpawn.charaArcher.GetComponent<NavMeshAgentControllerPlayer>().maxHp = mobStatus[(int)JobType.Archer].hp;
-            enemySpawn.charaArcher.GetComponent<NavMeshAgentControllerPlayer>().attackPower = mobStatus[(int)JobType.Archer].attack;
-            enemySpawn.charaArcher.GetComponent<NavMeshAgentControllerPlayer>().attackInterval = mobStatus[(int)JobType.Archer].attackInterval;
-
-
-
-        }
-
-
-
-
-
-    }
-
-
-
-
     public void SetMobData(List<Status> data)
     {
         mobStatus = data;
