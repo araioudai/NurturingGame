@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb48373d19b8b0468e96d4bfe5cc5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitJudgmentPlayer
-  controller: {fileID: 4056313251190383167}
+  controller: {fileID: 2991119161189923243}
 --- !u!54 &5980759070203921907
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a3f31473887f9d4e85d1ff1059c9eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackRangeTriggerPlayer
-  controller: {fileID: 4056313251190383167}
+  controller: {fileID: 2991119161189923243}
 --- !u!1 &4479367567855176171
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,11 +553,12 @@ GameObject:
   - component: {fileID: 4837326336522104549}
   - component: {fileID: 8356655896680297498}
   - component: {fileID: 4056313251190383167}
+  - component: {fileID: 2991119161189923243}
   - component: {fileID: 7376656707531760452}
   - component: {fileID: 9167247915428500199}
   m_Layer: 0
   m_Name: KnightPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -646,7 +647,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5121400965870576446}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aafba0eb1a762664bb4629560e083013, type: 3}
   m_Name: 
@@ -661,6 +662,29 @@ MonoBehaviour:
   point: {fileID: 4479367567855176171}
   attackArea: 5
   attackInterval: 1.5
+--- !u!114 &2991119161189923243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121400965870576446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba49555120e628e418e28eeef943b1b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentController
+  maxHp: 100
+  hp: 0
+  attackPower: 1
+  HPUI: {fileID: 822765919743672344}
+  hpSliderUI: {fileID: 3405348373155554048}
+  agent: {fileID: 7376656707531760452}
+  target: {fileID: 7758471253239611360}
+  point: {fileID: 4479367567855176171}
+  attackArea: 5
+  attackInterval: 1.5
+  castleName: EnemyCastle
 --- !u!195 &7376656707531760452
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -940,6 +964,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9553400, guid: 75925c365bd895145beefbc806717633, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a37636fc793735e47a38779dca1b1ad1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

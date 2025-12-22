@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb48373d19b8b0468e96d4bfe5cc5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitJudgmentPlayer
-  controller: {fileID: 4426786002672720339}
+  controller: {fileID: 7260573925023512549}
 --- !u!54 &719889273703827639
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -415,12 +415,13 @@ GameObject:
   - component: {fileID: 6119086706076576135}
   - component: {fileID: 983000719251112932}
   - component: {fileID: 4426786002672720339}
+  - component: {fileID: 7260573925023512549}
   - component: {fileID: 5145409716903834698}
   - component: {fileID: 6908476874336494341}
   - component: {fileID: 6335153956183446886}
   m_Layer: 0
   m_Name: ArcherPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -509,7 +510,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5739847069925495729}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aafba0eb1a762664bb4629560e083013, type: 3}
   m_Name: 
@@ -524,6 +525,29 @@ MonoBehaviour:
   point: {fileID: 817621270093577199}
   attackArea: 20
   attackInterval: 1
+--- !u!114 &7260573925023512549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739847069925495729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba49555120e628e418e28eeef943b1b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentController
+  maxHp: 75
+  hp: 0
+  attackPower: 1
+  HPUI: {fileID: 8803459191480035820}
+  hpSliderUI: {fileID: 1925626781115594091}
+  agent: {fileID: 5145409716903834698}
+  target: {fileID: 5137881701227526523}
+  point: {fileID: 817621270093577199}
+  attackArea: 20
+  attackInterval: 1
+  castleName: EnemyCastle
 --- !u!195 &5145409716903834698
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -760,7 +784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a3f31473887f9d4e85d1ff1059c9eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackRangeTriggerPlayer
-  controller: {fileID: 4426786002672720339}
+  controller: {fileID: 7260573925023512549}
 --- !u!1 &8675956860329267127
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,6 +988,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9563318, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 67afe78003db1994b9de2a9bdaaa14e4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
