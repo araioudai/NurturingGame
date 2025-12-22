@@ -26,6 +26,7 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
 
     Vector3 attackPos;                                              //攻撃場所保存用
     Vector3 firstPoint;
+    Animator animator;
 
     private List<Transform> targetsInRange = new List<Transform>(); //攻撃対象物の座標格納用リスト
     private List<Transform> targetsPoint = new List<Transform>();
@@ -34,12 +35,16 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
     private float count;
     private float attackCount = 0;
 
+    private bool isMove;
+    private bool isAttack;
+
     #endregion
 
     #region Unityイベント関数
     private void Awake()
     {
         firstPoint = GameObject.Find("EnemyCastle").transform.position;
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,6 +54,8 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
         count = 5;
         attackCount = attackInterval;
         point.SetActive(false);
+        isMove = true;
+        isAttack = false;
         base.Start();
     }
 
@@ -74,6 +81,10 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
         }
         SetTarget();
         IsDead();
+        SetAnimatorAttack();
+        SetAnimatorMove();
+        //Debug.Log(isAttack);
+        //Debug.Log(isMove);
         //デバッグ用HP減らし
         /*        count -= Time.deltaTime;
                 if (count <= 0)
@@ -84,6 +95,18 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
                 }*/
         //Debug.Log(hp);
         //Debug.Log(attackCount);
+    }
+    #endregion
+
+    #region アニメーションセット
+    void SetAnimatorAttack()
+    {
+        animator.SetBool("IsAttack", isAttack);
+    }
+
+    void SetAnimatorMove()
+    {
+        animator.SetBool("IsMove", isMove);
     }
     #endregion
 
@@ -101,6 +124,7 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
         targetsInRange.Remove(t);
         if (targetsInRange.Count == 0) { 
             state = MOVE;
+            isAttack = false;
         }
     }
 
@@ -142,6 +166,7 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
     {
         if (agent != null && agent.enabled)
         {
+            isMove = false;
             agent.isStopped = true;
         }
     }
@@ -154,6 +179,7 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
     {
         if (agent != null && agent.enabled)
         {
+            isMove = true;
             agent.isStopped = false;
         }
     }
@@ -163,16 +189,18 @@ public class NavMeshAgentControllerPlayer : EnemyStatus
     void AttackInteral()
     {
         attackCount -= Time.deltaTime;
-        StartCoroutine("AttackTime");
+        StartCoroutine(AttackTime());
     }
 
     IEnumerator AttackTime()
     {
         if (attackCount <= 0)
         {
+            isAttack = true;
             point.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             attackCount = attackInterval;
+            isAttack = false;
             point.SetActive(false);
         }
     }

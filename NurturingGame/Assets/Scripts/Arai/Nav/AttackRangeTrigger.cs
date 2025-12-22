@@ -23,6 +23,7 @@ public class AttackRangeTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            controller.SetState(0);
             controller.RemoveAttackTarget(other.transform); //ˆÚ“®ó‘Ô‚Ö
         }
     }

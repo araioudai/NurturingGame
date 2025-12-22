@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HitJudgmentPlayer : MonoBehaviour
 {
-    [SerializeField] private NavMeshAgentControllerPlayer controller;
+    [SerializeField] private NavMeshAgentController controller;
 
     #region “–‚½‚è”»’è
 

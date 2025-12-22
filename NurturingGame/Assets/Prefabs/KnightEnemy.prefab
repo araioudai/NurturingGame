@@ -187,6 +187,7 @@ MonoBehaviour:
   point: {fileID: 116488927481324106}
   attackArea: 5
   attackInterval: 1.5
+  castleName: PlayerCastle
 --- !u!195 &5404529736095643645
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -940,6 +941,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9553400, guid: 75925c365bd895145beefbc806717633, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9553400, guid: 75925c365bd895145beefbc806717633, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a37636fc793735e47a38779dca1b1ad1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

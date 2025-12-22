@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackRangeTriggerPlayer : MonoBehaviour
 {
     #region private•Ï”
-    [SerializeField] private NavMeshAgentControllerPlayer controller;
+    [SerializeField] private NavMeshAgentController controller;
     #endregion
 
     #region “–‚½‚è”»’è
