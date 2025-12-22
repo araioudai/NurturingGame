@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Stage2
   m_EditorClassIdentifier: Assembly-CSharp::StageInfo
   csv: {fileID: 4900000, guid: 611517760b8b7a64295e3b8f278de721, type: 3}
-  lines: 5
-  columns: 5
+  lines: 15
+  columns: 15
+  stageObj:
+  - {fileID: 8880885990710024901, guid: e22a01d05580db343b13c3e60fea6520, type: 3}
+  - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}

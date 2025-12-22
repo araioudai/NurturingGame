@@ -1,29 +1,46 @@
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using static StageInfo;
 
 public class StageGenerator : MonoBehaviour
 {
-    public StageInfo[] stageInfo;
-    public GameObject[] stageObj;
-    public Transform stage;
+    #region　定数
+    private static Vector3 TOWER_DOWN = new Vector3(0, 2.7f, 2);
+    private static Vector3 TOWER_UP = new Vector3(0, 2.7f, -2);
+    private static Vector3 TOWER_LEFT = new Vector3(-2, 2.7f, 0);
+    private static Vector3 TOWER_RIGHT = new Vector3(2, 2.7f, 0);
 
-    [SerializeField] float objInterval = 2;
-    [SerializeField] Vector3 genPos = Vector3.zero;
+    private const float rote = 90;  // 回転角度
+    #endregion
 
+    #region public変数
+    public StageInfo[] stageInfo;   // ステージ用のスクリプタブルオブジェクト
+    public Transform stage;         // 生成する親オブジェクト
+    public int stageIndex = 0;      // 生成するステージ
+    public GameObject player;
+    #endregion
+
+    #region private変数
+    [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
+    private Vector3 spownPos;       // playerの生成座標
+    #endregion
+
+    #region　Unityイベント関数
     void Awake()
     {
+        // スクリプタブルオブジェクトがnullじゃないなら
         if (stageInfo != null)
         {
-            ImportCSV(stageInfo[0]);
-            Generator();
+            ImportCSV(stageInfo[stageIndex]);   // CSV読み込み
+            Generator();                        // 生成処理
         }
+
+        player.transform.position = spownPos;   // 生成座標にplayerをセット
     }
+    #endregion
 
-    void Update()
-    {
-
-    }
-
+    #region　CSV関数
     private static void ImportCSV(StageInfo info)
     {
         string[] lines = info.csv.text.Replace("\r", "").Split('\n').
@@ -47,26 +64,98 @@ public class StageGenerator : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 生成処理
     private void Generator()
     {
-        for(int i = 0; i < stageInfo[0].lines;  i++)
-        {
-            for(int j = 0; j < stageInfo[0].columns; j++)
-            {
-                float x = genPos.x + j * objInterval;
-                float z = genPos.z - i * objInterval;
+        StageInfo currentStage = stageInfo[stageIndex];
 
-                int index = stageInfo[0].map[i][j];
-                if (index >= 0 && index < stageObj.Length)
+        for (int i = 0; i < currentStage.lines; i++)
+        {
+            for (int j = 0; j < currentStage.columns; j++)
+            {
+                float x = j * objInterval;
+                float z = -i * objInterval;
+
+                int index = currentStage.map[i][j];
+                if (index >= 0 && index < currentStage.stageObj.Length)
                 {
-                    if (stageObj[index] != null)
+                    if (currentStage.stageObj[index] != null)
                     {
-                        Instantiate(stageObj[index], new Vector3(x, genPos.y, z), Quaternion.identity, stage);
+                        if (index == (int)Info.START)
+                        {
+                            spownPos = new Vector3(x, 1, z + 15);
+                        }
+
+
+
+                        if (index == (int)Info.TOWER)
+                        {
+                            GameObject obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                            TowerMove(i, j, obj);
+
+                        }
+                        else
+                        {
+                            Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                        }
                     }
                 }
-               
+
             }
         }
     }
+
+    private void TowerMove(int y, int x, GameObject obj)
+    {
+
+        StageInfo currentStage = stageInfo[stageIndex];
+        GameObject tower = obj.transform.GetChild(1).gameObject;
+
+        if (y - 1 >= 0)
+        {
+            if (currentStage.map[y - 1][x] == (int)Info.ROAD)
+            {
+                tower.transform.position = obj.transform.position + TOWER_DOWN;
+                Debug.Log("UP");
+                return;
+            }
+        }
+
+        if (y + 1 < currentStage.lines)
+        {
+            if (currentStage.map[y + 1][x] == (int)Info.ROAD)
+            {
+                tower.transform.position = obj.transform.position + TOWER_UP;
+
+                tower.transform.rotation = Quaternion.Euler(-rote, 0, rote * 2);
+                Debug.Log("DOWN");
+                return;
+            }
+        }
+
+        if (x - 1 >= 0)
+        {
+            if (currentStage.map[y][x - 1] == (int)Info.ROAD)
+            {
+                tower.transform.position = obj.transform.position + TOWER_LEFT;
+                tower.transform.rotation = Quaternion.Euler(-rote, 0, -rote);
+                Debug.Log("LEFT");
+                return;
+            }
+        }
+
+        if (x + 1 < currentStage.columns)
+        {
+            if (currentStage.map[y][x + 1] == (int)Info.ROAD)
+            {
+                tower.transform.position = obj.transform.position + TOWER_RIGHT;
+                tower.transform.rotation = Quaternion.Euler(-rote, 0, rote);
+                Debug.Log("RIGHT");
+                return;
+            }
+        }
+    }
+    #endregion
 }
