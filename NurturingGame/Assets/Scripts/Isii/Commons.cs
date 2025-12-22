@@ -153,6 +153,7 @@ namespace Udon
         {
             public int hp;
             public int attack;
+            public int attackSpeed;
             public int speed;
             public int skillAttack;
 
@@ -165,6 +166,7 @@ namespace Udon
                 {
                     hp = mobHpLevelStatesTable[level];
                     attack = allAttackLevelStatesTable[level];
+                    attackSpeed = 1;                                                // モブは攻撃速度固定
                     skillAttack = 0;                                                // モブはスキル攻撃なし
 
                     switch (jobType)
@@ -195,6 +197,7 @@ namespace Udon
                 {
                     hp = pHpLevelStatesTable[level];
                     attack = pSkillPowerLevelStatesTable[level];
+                    attackSpeed = 1;                                                // プレイヤーは攻撃速度固定
                     skillAttack = pSkillPowerLevelStatesTable[level];
                     speed = pSpeedLevelStatesTable[level];
                 }

@@ -27,10 +27,10 @@ public class LevelUp : MonoBehaviour
 
 
 
-    [System.Obsolete]
     void Start()
     {
-        SaveData playerData = FindObjectOfType<GameDataManager>().playerData;
+
+        SaveData playerData = FindFirstObjectByType<GameDataManager>().playerData;
 
         tcBuildingLevelUpButton.onClick.AddListener(() => TCBuildingLevelUp());
         for (int i = 0; i < tcJobLevelUpButton.Count; i++)
@@ -50,13 +50,12 @@ public class LevelUp : MonoBehaviour
     #region モブ
 
     [ContextMenu("兵舎/建物レベルアップ")]
-    [System.Obsolete]
     /// <summary>
     /// 兵舎/建物レベルアップ
     /// </summary>
     public bool TCBuildingLevelUp()
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // 兵舎/建物レベルアップ
         if (playerData.trainingCentre.buildingLevel < (int)JobType.Count)
         {
@@ -87,13 +86,12 @@ public class LevelUp : MonoBehaviour
     }
 
     // [ContextMenu("兵舎/職別レベルアップ")]
-    [System.Obsolete]
     /// <summary>
     /// 兵舎/職別レベルアップ
     /// </summary>
     public bool TCJobLevelUp(JobType jobType)
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // 兵舎/職別レベルアップ
 
         // 現在のレベルを取得
@@ -194,10 +192,9 @@ public class LevelUp : MonoBehaviour
 
     #region プレイヤー
     [ContextMenu("プレイヤー/建物レベルアップ")]
-    [System.Obsolete]
     public bool PBuildingLevelUp()
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // プレイヤーレベルアップ
         if (playerData.playerTC.buildingLevel < buildingMaxLevel)
         {
@@ -228,10 +225,9 @@ public class LevelUp : MonoBehaviour
     }
 
     // [ContextMenu("プレイヤー/レベルアップ")]
-    [System.Obsolete]
     public bool PSkillLevelUp(SkillType skillType)
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // プレイヤー/スキル別レベルアップ
 
         // 現在のレベルを取得
