@@ -28,7 +28,7 @@ public class Castle : MonoBehaviour
     private void Update()
     {
         IsDead();
-        Debug.Log(hpSlider.value);
+        //Debug.Log(hpSlider.value);
     }
     #endregion
 

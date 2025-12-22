@@ -13,8 +13,6 @@ public class EnemySpawn : MonoBehaviour
     [Header("ステージの敵生成上限")]
     [SerializeField] protected int enemyLimit;        //敵の生成上限設定用
 
-    private int point;                                //生成に必要なポイント
-    private float count;                              //ポイントアップの為のカウント
     private float randomX;                            //ランダムスポーンポジションX座標用
     private float randomZ;                            //ランダムスポーンポジションZ座標用
     private Vector3 spawnPosition;                    //ランダムスポーンポジション
@@ -24,9 +22,6 @@ public class EnemySpawn : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //生成に必要なポイント
-        point = 6;
-
         //範囲内でランダムな座標を計算
         randomX = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
         randomZ = Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2);
@@ -58,21 +53,20 @@ public class EnemySpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        count += Time.deltaTime;
-        if(count >= 5) { point += 1; count = 0; }
-        if(point >= 12) { point = 12; }
-        Debug.Log(point);
+
     }
     #endregion
 
     #region 騎士生成が押された時の処理
     public void PushKnigth()
     {
-        if(point >= 1)
+        if(GameManager.Instance.GetPoint() >= 1)
         {
             //騎士をインスタンス化する(生成する)
             Instantiate(charaKnight, spawnPosition, Quaternion.identity);
-            point -= 1;
+
+            //ポイントをマイナス
+            GameManager.Instance.SetMinusPoint(1);
         }
     }
     #endregion
@@ -80,11 +74,13 @@ public class EnemySpawn : MonoBehaviour
     #region 弓兵生成が押された時の処理
     public void PushArcher()
     {
-        if (point >= 2)
+        if (GameManager.Instance.GetPoint() >= 2)
         {
             //弓兵をインスタンス化する(生成する)
             Instantiate(charaArcher, spawnPosition, Quaternion.identity);
-            point -= 2;
+            
+            //ポイントをマイナス
+            GameManager.Instance.SetMinusPoint(2);
         }
     }
     #endregion
