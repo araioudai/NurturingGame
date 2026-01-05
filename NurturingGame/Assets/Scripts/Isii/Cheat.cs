@@ -1,3 +1,4 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,13 +29,4 @@ public class Cheat : MonoBehaviour
             textManager.ResourcesTextUpdate(gameDataManager.playerData.resources);
         }
     }
-
-
-
-
-
-
-
-
-
 }

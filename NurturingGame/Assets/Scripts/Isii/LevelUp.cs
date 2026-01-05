@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using static Udon.Commons;
 
 [RequireComponent(typeof(TextManager))]
-[RequireComponent(typeof(StatesManager))]
+[RequireComponent(typeof(StatusManager))]
 public class LevelUp : MonoBehaviour
 {
     [SerializeField] SaveData playerData;
@@ -27,10 +27,10 @@ public class LevelUp : MonoBehaviour
 
 
 
-    [System.Obsolete]
     void Start()
     {
-        SaveData playerData = FindObjectOfType<GameDataManager>().playerData;
+
+        SaveData playerData = FindFirstObjectByType<GameDataManager>().playerData;
 
         tcBuildingLevelUpButton.onClick.AddListener(() => TCBuildingLevelUp());
         for (int i = 0; i < tcJobLevelUpButton.Count; i++)
@@ -50,13 +50,12 @@ public class LevelUp : MonoBehaviour
     #region モブ
 
     [ContextMenu("兵舎/建物レベルアップ")]
-    [System.Obsolete]
     /// <summary>
     /// 兵舎/建物レベルアップ
     /// </summary>
     public bool TCBuildingLevelUp()
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // 兵舎/建物レベルアップ
         if (playerData.trainingCentre.buildingLevel < (int)JobType.Count)
         {
@@ -67,7 +66,7 @@ public class LevelUp : MonoBehaviour
                 playerData.trainingCentre.buildingLevel++;
                 Debug.Log("兵舎/建物レベルアップ成功！ 新しいレベル: " + playerData.trainingCentre.buildingLevel, this);
 
-                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.trainingCentre.buildingLevel);
+                GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.trainingCentre.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().TrainingCenterLevelTextUpdate(playerData.trainingCentre.buildingLevel);
 
@@ -87,13 +86,12 @@ public class LevelUp : MonoBehaviour
     }
 
     // [ContextMenu("兵舎/職別レベルアップ")]
-    [System.Obsolete]
     /// <summary>
     /// 兵舎/職別レベルアップ
     /// </summary>
     public bool TCJobLevelUp(JobType jobType)
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // 兵舎/職別レベルアップ
 
         // 現在のレベルを取得
@@ -124,7 +122,6 @@ public class LevelUp : MonoBehaviour
             int requiredResources = mobLevelUpResourcesTable[currentLevel];
             if (playerData.resources >= requiredResources)
             {
-                playerData.resources -= requiredResources;
                 switch (jobType)
                 {
                     case JobType.Knight:
@@ -164,8 +161,9 @@ public class LevelUp : MonoBehaviour
                 }
                 Debug.Log(jobType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
 
+                playerData.resources -= requiredResources;
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
-                GetComponent<StatesManager>().MobStatesSet(StatesType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
+                GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
 
                 return true;
@@ -194,10 +192,9 @@ public class LevelUp : MonoBehaviour
 
     #region プレイヤー
     [ContextMenu("プレイヤー/建物レベルアップ")]
-    [System.Obsolete]
     public bool PBuildingLevelUp()
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // プレイヤーレベルアップ
         if (playerData.playerTC.buildingLevel < buildingMaxLevel)
         {
@@ -208,7 +205,7 @@ public class LevelUp : MonoBehaviour
                 playerData.playerTC.buildingLevel++;
                 Debug.Log("プレイヤーレベルアップ成功！ 新しいレベル: " + playerData.playerTC.buildingLevel, this);
 
-                GetComponent<StatesManager>().PlayerStatesSet(StatesType.Player, playerData.playerTC.buildingLevel);
+                GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.playerTC.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().PlayerLevelTextUpdate(playerData.playerTC.buildingLevel);
 
@@ -228,10 +225,9 @@ public class LevelUp : MonoBehaviour
     }
 
     // [ContextMenu("プレイヤー/レベルアップ")]
-    [System.Obsolete]
     public bool PSkillLevelUp(SkillType skillType)
     {
-        playerData = FindObjectOfType<GameDataManager>().playerData;
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
         // プレイヤー/スキル別レベルアップ
 
         // 現在のレベルを取得
@@ -268,7 +264,6 @@ public class LevelUp : MonoBehaviour
             int requiredResources = mobLevelUpResourcesTable[currentLevel];
             if (playerData.resources >= requiredResources)
             {
-                playerData.resources -= requiredResources;
                 switch (skillType)
                 {
                     case SkillType.Hummer:
@@ -320,6 +315,8 @@ public class LevelUp : MonoBehaviour
                     return false;
                 }
                 Debug.Log(skillType.ToString() + "のレベルアップ成功！ 新しいレベル: " + (currentLevel + 1), this);
+
+                playerData.resources -= requiredResources;
 
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().SkillLevelTextUpdate(0, playerData);
