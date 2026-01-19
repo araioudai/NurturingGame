@@ -102,4 +102,16 @@ public class GameDataManager : MonoBehaviour
             Debug.LogWarning("データファイルが存在しません: " + filePath, this);
         }
     }
+
+
+
+    public void PlayerResourcesAdd(int amount)
+    {
+        playerData.resources += amount;
+        GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
+    }
+
+
+
+
 }
