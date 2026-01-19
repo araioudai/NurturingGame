@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3b12462a2a444843813b8ee95762757, type: 3}
-  m_Name: Stage2
+  m_Name: Stage4
   m_EditorClassIdentifier: Assembly-CSharp::StageInfo
-  csv: {fileID: 4900000, guid: 611517760b8b7a64295e3b8f278de721, type: 3}
+  csv: {fileID: 4900000, guid: 5c00bd8cc042a904f8f78108db281683, type: 3}
   lines: 15
   columns: 15
   stageObj:

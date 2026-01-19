@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using static StageInfo;
+using static StageIndex;
 
 public class StageGenerator : MonoBehaviour
 {
@@ -17,18 +18,22 @@ public class StageGenerator : MonoBehaviour
     #region public変数
     public StageInfo[] stageInfo;   // ステージ用のスクリプタブルオブジェクト
     public Transform stage;         // 生成する親オブジェクト
-    public int stageIndex = 0;      // 生成するステージ
     public GameObject player;
     #endregion
 
     #region private変数
     [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
+    private int stageIndex = 0;      // 生成するステージ
     private Vector3 spownPos;       // playerの生成座標
     #endregion
 
     #region　Unityイベント関数
     void Awake()
     {
+        stageIndex = Instance.GetIndex() - 1;
+
+        if(stageIndex < 0 ||  stageIndex >= stageInfo.Length) stageIndex = 0;
+
         // スクリプタブルオブジェクトがnullじゃないなら
         if (stageInfo != null)
         {
@@ -85,7 +90,7 @@ public class StageGenerator : MonoBehaviour
                     {
                         if (index == (int)Info.START)
                         {
-                            spownPos = new Vector3(x, 1, z + 15);
+                            spownPos = new Vector3(x, 1, z);
                         }
 
 
