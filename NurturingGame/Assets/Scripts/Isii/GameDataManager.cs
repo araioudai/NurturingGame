@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static Udon.Commons;
@@ -90,6 +91,8 @@ public class GameDataManager : MonoBehaviour
         {
             File.Delete(filePath);
             Debug.Log("データ削除: " + filePath, this);
+            FindFirstObjectByType<LevelUp>().LockIconRefresh();
+
             CreateData();
             Debug.Log("新規データ作成", this);
             SaveData();
