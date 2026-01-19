@@ -8,6 +8,9 @@ public class HangOvers : MonoBehaviour
     #region 持ち越しデータ
     [HideInInspector ] public Status playerState = new();
     [HideInInspector] public List<Status> mobStatus = new();
+
+    public List<bool> activeJob = new();
+
     #endregion
 
     public void SetMobData(List<Status> data)

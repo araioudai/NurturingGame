@@ -4318,7 +4318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1471458962
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5129,6 +5129,7 @@ MonoBehaviour:
   - {fileID: 1442256734}
   - {fileID: 1646969628}
   - {fileID: 983423017}
+  lockIcons: []
 --- !u!114 &1585609951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6774,7 +6775,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ea5e3a660aaf84ba67de8762810c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HangOvers
-  mobStates: []
+  playerState:
+    hp: 0
+    attack: 0
+    attackInterval: 0
+    speed: 0
+    skillAttack: 0
+  mobStatus: []
+  activeJob: 
 --- !u!114 &2028198081 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5873458750837640020, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}

@@ -18,6 +18,7 @@ public class LevelUp : MonoBehaviour
     [SerializeField] Button pBuildingLevelUpButton;
     [SerializeField] List<Button> pSkillLevelUpButton;
 
+    [SerializeField] List<GameObject> lockIcons = new();
 
 
 
@@ -29,14 +30,19 @@ public class LevelUp : MonoBehaviour
 
     void Start()
     {
+    }
 
-        SaveData playerData = FindFirstObjectByType<GameDataManager>().playerData;
+
+    public void LevelUpInit()
+    {
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
 
         tcBuildingLevelUpButton.onClick.AddListener(() => TCBuildingLevelUp());
         for (int i = 0; i < tcJobLevelUpButton.Count; i++)
         {
             int index = i; // ローカル変数にキャプチャ
             tcJobLevelUpButton[i].onClick.AddListener(() => TCJobLevelUp((JobType)index));
+            lockIcons.Add(tcJobLevelUpButton[i].transform.GetChild(1).gameObject);
         }
         pBuildingLevelUpButton.onClick.AddListener(() => PBuildingLevelUp());
         for (int i = 0; i < pSkillLevelUpButton.Count; i++)
@@ -44,8 +50,28 @@ public class LevelUp : MonoBehaviour
             int index = i; // ローカル変数にキャプチャ
             pSkillLevelUpButton[i].onClick.AddListener(() => PSkillLevelUp((SkillType)index));
         }
+        LockIconDel();
     }
 
+    #region ロックアイコン削除
+    /// <summary>
+    /// ロックアイコン削除
+    /// </summary>
+    void LockIconDel()
+    {
+        for (int i = 0; i < tcJobLevelUpButton.Count; i++)
+        {
+            if (playerData.trainingCentre.buildingLevel >= i + 1)
+            {
+                lockIcons[i].SetActive(false);
+            }
+            else
+            {
+                lockIcons[i].SetActive(true);
+            }
+        }
+    }
+    #endregion
 
     #region モブ
 
@@ -69,6 +95,8 @@ public class LevelUp : MonoBehaviour
                 GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.trainingCentre.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().TrainingCenterLevelTextUpdate(playerData.trainingCentre.buildingLevel);
+
+                LockIconDel();
 
                 return true;
             }
@@ -165,6 +193,8 @@ public class LevelUp : MonoBehaviour
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
+
+                LockIconDel();
 
                 return true;
             }

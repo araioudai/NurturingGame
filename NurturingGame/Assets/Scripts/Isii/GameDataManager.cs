@@ -9,22 +9,12 @@ public class GameDataManager : MonoBehaviour
     [SerializeField] public SaveData playerData;
 
     [SerializeField] private string playerName; // プレイヤー名を指定するための変数
-[SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
+    [SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
 
-    void Start()
+    void Awake()
     {
         LoadGameData();
     }
-
-
-
-
-
-
-
-
-
-
 
     [ContextMenu("LoadGameData")]
     public void LoadGameData()
@@ -56,6 +46,8 @@ public class GameDataManager : MonoBehaviour
             GetComponent<StatusManager>().PlayerStatesInit(playerData);
             GetComponent<StatusManager>().MobStatesInit(playerData);
         }
+
+        FindFirstObjectByType<LevelUp>().LevelUpInit();
 
         GetComponent<TextManager>().InitTextUpdate(playerData);
     }
