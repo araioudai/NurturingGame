@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class TitleManager : MonoBehaviour
+public class TitleManagerkari : MonoBehaviour
 {
     [HideInInspector]
     [SerializeField] private List<string> sceneToLoad;

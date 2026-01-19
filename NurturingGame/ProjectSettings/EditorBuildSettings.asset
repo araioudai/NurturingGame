@@ -8,24 +8,30 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TitleScene.unity
     guid: 1cbd10dd15d542448b1943e69cbcb858
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageScene.unity
     guid: 759c0e4f38b21fa44b5ec5aa8f4dec6a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageScene 1.unity
     guid: 6dcf3ff6bb4e46a47b87985d574a55b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageScene 2.unity
     guid: d82ff1c8187fa904aadf411cc5508e82
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScene.unity
     guid: 19f876be88c917842a9877d4a293cd1b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Isii/Test02.unity
     guid: e0de8edcbb4a52e41b15b1cdc04c7bb0
+  - enabled: 1
+    path: Assets/Scenes/Arai/TestTitle.unity
+    guid: 175b6bd6d6448604b8c903dfc6bba210
+  - enabled: 1
+    path: Assets/Scenes/Arai/TestGame.unity
+    guid: f2e31684f0d42fa4fac7cb31b0932476
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

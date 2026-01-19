@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,8 @@ public class GameManager : MonoBehaviour
         [SerializeField] private int lowerLevel = 1;
         [SerializeField] private int upperLevel = 50;*/
 
-
+    [Header("NavMesh")]
+    [SerializeField] private NavMeshSurface surface;
     [Header("最大SP(ポイント)")]
     [SerializeField] private float maxSp = 12;
     [Header("SPBar（スライダー）")]
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
         sp = 6;
         spSlider = spSliderUI.GetComponent<Slider>();
         spSlider.value = 1f;
-
+        Debug.Log(StageIndex.Instance.GetIndex());
         //ApplyEnemyLevel();
     }
 
@@ -113,7 +115,7 @@ public class GameManager : MonoBehaviour
     #region ベイク処理
     public void Bake()
     {
-
+        surface.BuildNavMesh();
     } 
     #endregion
 
