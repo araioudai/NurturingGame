@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     [Header("プレイヤー追従カメラ")]
     [SerializeField] Camera mainCamera;
+    [SerializeField] float kari;
     [Header(" 最大体力")]
     [SerializeField] int maxHp;                 
     [Header("HPUIキャンバス")]
@@ -96,7 +97,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         // メインカメラをプレイヤーの後に追従させる
-        mainCamera.transform.position = new Vector3(transform.position.x, mainCamera.transform.position.y, transform.position.z - 5);
+        mainCamera.transform.position = new Vector3(transform.position.x, mainCamera.transform.position.y, transform.position.z - kari);
 
         // ターゲットと自身の座標の差を求める
         Vector3 dir = targetPos - transform.position;
@@ -106,10 +107,10 @@ public class Player : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, transform.position.y, targetPos.z), speed * Time.fixedDeltaTime);
         }
-        else
-        {
-            transform.position = targetPos;
-        }
+        //else
+        //{
+        //    transform.position = targetPos;
+        //}
     }
     #endregion
 

@@ -81,6 +81,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2110536708175252678, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
+      propertyPath: m_AngularDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
       propertyPath: m_Name
       value: Load
