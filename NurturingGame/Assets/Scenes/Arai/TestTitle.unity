@@ -4793,7 +4793,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1595640667}
         m_TargetAssemblyTypeName: GameDataManager, Assembly-CSharp
         m_MethodName: LoadGameData
         m_Mode: 1
@@ -5459,7 +5459,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1595640667}
         m_TargetAssemblyTypeName: GameDataManager, Assembly-CSharp
         m_MethodName: DataDelete
         m_Mode: 1
@@ -8215,7 +8215,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1595640667}
         m_TargetAssemblyTypeName: GameDataManager, Assembly-CSharp
         m_MethodName: SaveData
         m_Mode: 1
@@ -8695,7 +8695,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30BF\u30EF\u30FC\u30C7\u30A3\u30D5\u30A7\u30F3\u30B9"
+  m_Text: "\u30AD\u30E3\u30C3\u30B9\u30EB\u30E9\u30C3\u30B7\u30E5"
 --- !u!222 &2111947064
 CanvasRenderer:
   m_ObjectHideFlags: 0
