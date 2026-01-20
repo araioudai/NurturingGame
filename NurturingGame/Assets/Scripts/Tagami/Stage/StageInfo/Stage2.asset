@@ -16,8 +16,8 @@ MonoBehaviour:
   lines: 15
   columns: 15
   stageObj:
-  - {fileID: 8880885990710024901, guid: e22a01d05580db343b13c3e60fea6520, type: 3}
-  - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
-  - {fileID: 2331554911923460486, guid: cc97bc9dbcc0400419b4e2613ade3d9c, type: 3}
+  - {fileID: 1593192347526097397, guid: 8a817fdbc707e7d408c47457850de52c, type: 3}
+  - {fileID: 5474399702238242174, guid: 1eeee0306ce5bcf4092ddfffc849e41d, type: 3}
+  - {fileID: 5474399702238242174, guid: 1eeee0306ce5bcf4092ddfffc849e41d, type: 3}
   - {fileID: 6728888526406158284, guid: 50d3d7766784a9a43a00c697627b8172, type: 3}
   - {fileID: 6042625294743315744, guid: 85cc4deb2406dc243b55c95247295413, type: 3}

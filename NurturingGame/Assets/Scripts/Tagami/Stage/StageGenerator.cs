@@ -22,6 +22,7 @@ public class StageGenerator : MonoBehaviour
     public StageInfo[] stageInfo;   // ステージ用のスクリプタブルオブジェクト
     public Transform stage;         // 生成する親オブジェクト
     public GameObject player;
+
     #endregion
 
     #region private変数
@@ -36,11 +37,15 @@ public class StageGenerator : MonoBehaviour
     private Vector3 spownPos;       // playerの生成座標
 
     List<GameObject> cubes = new List<GameObject>();
+
+    private Vector3 casPos;
     #endregion
 
     #region　Unityイベント関数
     void Awake()
     {
+        
+
         if (surface == null)
         {
             surface = GetComponentInParent<NavMeshSurface>();
@@ -91,11 +96,14 @@ public class StageGenerator : MonoBehaviour
 
         Debug.Log("NavMesh Bake Start");
         surface.BuildNavMesh();
+        GameManager.Instance.SetCastlePos(casPos);
     }
 
     #endregion
 
     #endregion
+
+
 
     #region　CSV関数
     private static void ImportCSV(StageInfo info)
@@ -145,6 +153,13 @@ public class StageGenerator : MonoBehaviour
                             spownPos = new Vector3(x, 1, z);
                         }
                         
+                        if(index == (int)Info.GOAL)
+                        {
+                            casPos = new Vector3(x, 1, z);
+
+
+                        }
+
                         if (index == (int)Info.TOWER)
                         {
                             GameObject obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
@@ -165,7 +180,7 @@ public class StageGenerator : MonoBehaviour
             }
         }
 
-        CombineMeshesForCollider();
+       //  CombineMeshesForCollider();
     }
 
     private void TowerMove(int y, int x, GameObject obj)
@@ -180,6 +195,7 @@ public class StageGenerator : MonoBehaviour
             {
                 tower.transform.position = obj.transform.position + TOWER_DOWN;
                 Debug.Log("UP");
+                tower.transform.rotation = Quaternion.Euler(-rote, 0, rote * 2);
                 return;
             }
         }
