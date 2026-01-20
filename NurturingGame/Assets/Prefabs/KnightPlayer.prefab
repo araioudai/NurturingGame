@@ -552,7 +552,6 @@ GameObject:
   - component: {fileID: 2987189843904875891}
   - component: {fileID: 4837326336522104549}
   - component: {fileID: 8356655896680297498}
-  - component: {fileID: 4056313251190383167}
   - component: {fileID: 2991119161189923243}
   - component: {fileID: 7376656707531760452}
   - component: {fileID: 9167247915428500199}
@@ -640,28 +639,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4056313251190383167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121400965870576446}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aafba0eb1a762664bb4629560e083013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentControllerPlayer
-  maxHp: 100
-  hp: 0
-  attackPower: 1
-  HPUI: {fileID: 822765919743672344}
-  hpSliderUI: {fileID: 3405348373155554048}
-  agent: {fileID: 7376656707531760452}
-  target: {fileID: 7758471253239611360}
-  point: {fileID: 4479367567855176171}
-  attackArea: 5
-  attackInterval: 1.5
 --- !u!114 &2991119161189923243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +661,7 @@ MonoBehaviour:
   point: {fileID: 4479367567855176171}
   attackArea: 5
   attackInterval: 1.5
-  castleName: EnemyCastle
+  castleName: EnemyCastle(Clone)
 --- !u!195 &7376656707531760452
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -836,7 +813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf2fe496a40dbd40a4b4d7a5b9f1afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectRangeTriggerPlayer
-  controller: {fileID: 4056313251190383167}
+  controller: {fileID: 2991119161189923243}
 --- !u!1 &6355468573270325393
 GameObject:
   m_ObjectHideFlags: 0

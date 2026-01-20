@@ -414,7 +414,6 @@ GameObject:
   - component: {fileID: 538849776759688222}
   - component: {fileID: 6119086706076576135}
   - component: {fileID: 983000719251112932}
-  - component: {fileID: 4426786002672720339}
   - component: {fileID: 7260573925023512549}
   - component: {fileID: 5145409716903834698}
   - component: {fileID: 6908476874336494341}
@@ -503,28 +502,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4426786002672720339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5739847069925495729}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aafba0eb1a762664bb4629560e083013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentControllerPlayer
-  maxHp: 75
-  hp: 0
-  attackPower: 1
-  HPUI: {fileID: 8803459191480035820}
-  hpSliderUI: {fileID: 1925626781115594091}
-  agent: {fileID: 5145409716903834698}
-  target: {fileID: 5137881701227526523}
-  point: {fileID: 817621270093577199}
-  attackArea: 20
-  attackInterval: 1
 --- !u!114 &7260573925023512549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,7 +524,7 @@ MonoBehaviour:
   point: {fileID: 817621270093577199}
   attackArea: 20
   attackInterval: 1
-  castleName: EnemyCastle
+  castleName: EnemyCastle(Clone)
 --- !u!195 &5145409716903834698
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -595,7 +572,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!136 &6335153956183446886
 CapsuleCollider:
@@ -686,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf2fe496a40dbd40a4b4d7a5b9f1afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectRangeTriggerPlayer
-  controller: {fileID: 4426786002672720339}
+  controller: {fileID: 7260573925023512549}
 --- !u!1 &7091868071396017647
 GameObject:
   m_ObjectHideFlags: 0

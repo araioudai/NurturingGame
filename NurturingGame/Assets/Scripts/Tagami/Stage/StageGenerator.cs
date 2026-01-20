@@ -1,8 +1,10 @@
 using System.Linq;
+using System.Collections;
+using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEngine;
-using static StageInfo;
-using static StageIndex;
+using UnityEngine.AI;
+
 
 public class StageGenerator : MonoBehaviour
 {
@@ -22,6 +24,12 @@ public class StageGenerator : MonoBehaviour
     #endregion
 
     #region private変数
+    [Header("NavMesh")]
+    [SerializeField] private NavMeshSurface surface;
+    [Header("プレイヤーモブ生成場所")]
+    [SerializeField] private Transform spawn;
+    [Header("敵の城プレファブ")]
+    [SerializeField] private GameObject enemyCastle;
     [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
     private int stageIndex = 0;      // 生成するステージ
     private Vector3 spownPos;       // playerの生成座標
@@ -30,9 +38,14 @@ public class StageGenerator : MonoBehaviour
     #region　Unityイベント関数
     void Awake()
     {
-        stageIndex = Instance.GetIndex() - 1;
+        if (surface == null)
+        {
+            surface = GetComponentInParent<NavMeshSurface>();
+        }
 
-        if(stageIndex < 0 ||  stageIndex >= stageInfo.Length) stageIndex = 0;
+        stageIndex = StageIndex.Instance.GetIndex();
+
+        if(stageIndex < 1 ||  stageIndex >= stageInfo.Length) stageIndex = 1;
 
         // スクリプタブルオブジェクトがnullじゃないなら
         if (stageInfo != null)
@@ -42,7 +55,43 @@ public class StageGenerator : MonoBehaviour
         }
 
         player.transform.position = spownPos;   // 生成座標にplayerをセット
+        spawn.transform.position = spownPos;    //生成座標にspwan場所をセット
     }
+
+    void Start()
+    {
+        StartCoroutine(BakeDelay());
+    }
+
+    #region ベイク処理
+    /// <summary>
+    /// 時間を置いて確実にBakeする
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BakeDelay()
+    {
+        yield return null; //1フレーム待つ
+
+        Bake();
+    }
+
+    /// <summary>
+    /// BakeのNullチェック
+    /// </summary>
+    private void Bake()
+    {
+        if (surface == null)
+        {
+            Debug.LogError("NavMeshSurface が null");
+            return;
+        }
+
+        Debug.Log("NavMesh Bake Start");
+        surface.BuildNavMesh();
+    }
+
+    #endregion
+
     #endregion
 
     #region　CSV関数
@@ -94,12 +143,10 @@ public class StageGenerator : MonoBehaviour
                         }
 
 
-
                         if (index == (int)Info.TOWER)
                         {
                             GameObject obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
                             TowerMove(i, j, obj);
-
                         }
                         else
                         {
