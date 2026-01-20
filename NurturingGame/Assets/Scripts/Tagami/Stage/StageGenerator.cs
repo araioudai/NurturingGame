@@ -4,6 +4,7 @@ using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 
 public class StageGenerator : MonoBehaviour
@@ -33,6 +34,8 @@ public class StageGenerator : MonoBehaviour
     [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
     private int stageIndex = 0;      // 生成するステージ
     private Vector3 spownPos;       // playerの生成座標
+
+    List<GameObject> cubes = new List<GameObject>();
     #endregion
 
     #region　Unityイベント関数
@@ -141,8 +144,7 @@ public class StageGenerator : MonoBehaviour
                         {
                             spownPos = new Vector3(x, 1, z);
                         }
-
-
+                        
                         if (index == (int)Info.TOWER)
                         {
                             GameObject obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
@@ -150,13 +152,20 @@ public class StageGenerator : MonoBehaviour
                         }
                         else
                         {
-                            Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                            var obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                        
+                            if(index == (int)Info.GROUND || index == (int)Info.ROAD || index == (int)Info.START)
+                            {
+                                cubes.Add(obj);
+                            }
                         }
                     }
                 }
 
             }
         }
+
+        CombineMeshesForCollider();
     }
 
     private void TowerMove(int y, int x, GameObject obj)
@@ -207,6 +216,39 @@ public class StageGenerator : MonoBehaviour
                 Debug.Log("RIGHT");
                 return;
             }
+        }
+    }
+    #endregion
+
+    #region tanaka
+    /// <summary>
+    /// 当たり判定を親オブジェクトへ結合
+    /// </summary>
+    private void CombineMeshesForCollider()
+    {
+        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        List<CombineInstance> combine = new List<CombineInstance>();
+
+        foreach (MeshFilter mf in meshFilters)
+        {
+            if (mf.gameObject == this.gameObject) continue;
+
+            CombineInstance ci = new CombineInstance();
+            ci.mesh = mf.sharedMesh;
+            ci.transform = mf.transform.localToWorldMatrix * transform.worldToLocalMatrix;
+            combine.Add(ci);
+        }
+
+        Mesh combinedMesh = new Mesh();
+        combinedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        combinedMesh.CombineMeshes(combine.ToArray(), true, true);
+
+        MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = combinedMesh;
+
+        foreach (GameObject cube in cubes)
+        {
+            Destroy(cube.GetComponent<Collider>());
         }
     }
     #endregion
