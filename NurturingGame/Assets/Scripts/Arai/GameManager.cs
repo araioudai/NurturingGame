@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
         [SerializeField] private int lowerLevel = 1;
         [SerializeField] private int upperLevel = 50;*/
 
-    [Header("NavMesh")]
-    [SerializeField] private NavMeshSurface surface;
     [Header("最大SP(ポイント)")]
     [SerializeField] private float maxSp = 12;
     [Header("SPBar（スライダー）")]
@@ -110,13 +108,6 @@ public class GameManager : MonoBehaviour
 
         spSlider.value = sp / maxSp;
     }
-    #endregion
-
-    #region ベイク処理
-    public void Bake()
-    {
-        surface.BuildNavMesh();
-    } 
     #endregion
 
     #region 敵登録用関数
