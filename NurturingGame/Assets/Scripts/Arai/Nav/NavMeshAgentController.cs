@@ -28,7 +28,7 @@ public class NavMeshAgentController : EnemyStatus
     [SerializeField] private string castleName;
 
     Vector3 attackPos;                                              //攻撃場所保存用
-    Vector3 firstPoint;
+    Transform firstPoint;
     Animator animator;
 
     private List<Transform> targetsInRange = new List<Transform>(); //攻撃対象物の座標格納用リスト
@@ -39,12 +39,34 @@ public class NavMeshAgentController : EnemyStatus
     private bool isAttack;
     private float attackCount = 0;
 
+    private bool targetFlg = false;
+
     #endregion
 
     #region セット関数
     public void SetState(int state)
     {
         this.state = state;
+    }
+
+    public void SetPos(Transform pos)
+    {
+        target.transform.position = pos.position;
+        agent.SetDestination(pos.position);
+    }
+
+    #endregion
+
+    #region ゲット関数
+    public Transform GetFirstPos()
+    {
+        // firstPoint = GameObject.Find(castleName).transform;
+        return firstPoint;
+    }
+
+    public Transform GetTargetPos()
+    {
+        return target;
     }
     #endregion
 
@@ -53,16 +75,18 @@ public class NavMeshAgentController : EnemyStatus
     {
         isAttack = false;
         isMove = true;
-        firstPoint = GameObject.Find(castleName).transform.position;
+         firstPoint = GameObject.Find(castleName).transform;
+        //firstPoint = GameManager.Instance.GetCastlePos();
         animator = GetComponentInChildren<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        target.transform.position = firstPoint;
+        target.transform.position = firstPoint.position;
         attackCount = attackInterval;
         point.SetActive(false);
+        agent.SetDestination(target.position);
         base.Start();
     }
 
@@ -70,12 +94,14 @@ public class NavMeshAgentController : EnemyStatus
     protected override void Update()
     {
         base.Update();
+        // Debug.Log(state);
+
+        // Debug.Log(firstPoint.position);
         switch (state)
         {
             case MOVE:
-                print("移動");
+                //print("移動");
                 ResumeAgentMovement();
-                agent.SetDestination(target.position);
                 break;
             case ATTACK:
                 StopAgentMovement();
@@ -83,7 +109,7 @@ public class NavMeshAgentController : EnemyStatus
                 AttackAreaFollow();
 
                 AttackInteral();
-                print("こうげき");
+                //print("こうげき");
                 break;
         }
         SetTarget();
@@ -151,7 +177,7 @@ public class NavMeshAgentController : EnemyStatus
 
     public void RemoveTargetPoint(Transform t)
     {
-        target.transform.position = firstPoint;
+        target.transform.position = firstPoint.position;
         targetsPoint.Remove(t);
     }
 
@@ -166,7 +192,7 @@ public class NavMeshAgentController : EnemyStatus
         }
         else
         {
-            target.transform.position = firstPoint;
+            target.transform.position = firstPoint.position;
         }
     }
     #endregion
@@ -198,25 +224,51 @@ public class NavMeshAgentController : EnemyStatus
     #endregion
 
     #region 攻撃間隔
+    /// <summary>
+    /// 攻撃間隔を管理する処理
+    /// Update から呼ばれ、一定時間ごとに攻撃を発生させる
+    /// </summary>
     void AttackInteral()
     {
+        //経過時間を減算
         attackCount -= Time.deltaTime;
-        StartCoroutine(AttackTime());
-    }
 
-    IEnumerator AttackTime()
-    {
+        //攻撃クールタイムが終了したら攻撃実行
         if (attackCount <= 0)
         {
-            isAttack = true;
-            point.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
+            DoAttack();
+
+            //次の攻撃までのクールタイムをリセット
             attackCount = attackInterval;
-            isAttack = false;
-            point.SetActive(false);
         }
     }
 
+    /// <summary>
+    /// 実際の攻撃処理を開始する
+    /// </summary>
+    void DoAttack()
+    {
+        //攻撃中フラグをON（アニメーション制御用）
+        isAttack = true;
+
+        //攻撃判定用オブジェクトを表示
+        point.SetActive(true);
+
+        //一定時間後に攻撃終了処理を呼び出す
+        Invoke(nameof(EndAttack), 0.5f);
+    }
+
+    /// <summary>
+    /// 攻撃終了時の処理
+    /// </summary>
+    void EndAttack()
+    {
+        //攻撃中フラグをOFF
+        isAttack = false;
+
+        //攻撃判定用オブジェクトを非表示
+        point.SetActive(false);
+    }
     #endregion
 
     #region 攻撃する場所を返す処理
@@ -282,10 +334,13 @@ public class NavMeshAgentController : EnemyStatus
             //対象がいない場合は攻撃ポイント非表示
             point.SetActive(false);
             state = MOVE;
+
+            // 城に戻す
+            target.transform.position = firstPoint.position;
+            agent.SetDestination(firstPoint.position);
         }
     }
     #endregion
-
 
     #region 一番近い攻撃対象物の場所を返す処理(移動場所)
     private Transform GetTargetPoint()
@@ -302,6 +357,7 @@ public class NavMeshAgentController : EnemyStatus
         {
             if (t == null) continue;
 
+            Debug.Log(t.position);
             float dist = Vector3.Distance(transform.position, t.position);
 
             if (dist < minDist)

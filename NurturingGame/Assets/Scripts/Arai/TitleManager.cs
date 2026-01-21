@@ -94,8 +94,8 @@ public class TitleManager : MonoBehaviour
     IEnumerator StageLoad()
     {
         yield return new WaitForSeconds(0.5f);
-        //SceneManager.LoadScene("TestGame");
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("TestGame");
+        //SceneManager.LoadScene("GameScene");
     }
 
     IEnumerator TextCountDown()

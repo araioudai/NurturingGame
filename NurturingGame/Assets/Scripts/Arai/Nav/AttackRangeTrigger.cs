@@ -11,8 +11,11 @@ public class AttackRangeTrigger : MonoBehaviour
     #region すり抜けた時
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(gameObject.name + "1");
+
         if (other.CompareTag("Player"))
         {
+            Debug.Log(gameObject.name + "2");
             controller.AddAttackTarget(other.transform); //アタック状態へ
         }
     }

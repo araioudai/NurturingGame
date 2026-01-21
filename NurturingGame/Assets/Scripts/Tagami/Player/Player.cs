@@ -10,9 +10,13 @@ public class Player : MonoBehaviour
 
     [Header("プレイヤー追従カメラ")]
     [SerializeField] Camera mainCamera;
-    [SerializeField] float kari;
+    [SerializeField] float backPos;
     [Header(" 最大体力")]
-    [SerializeField] int maxHp;                 
+    [SerializeField] int maxHp;
+    [Header("回復関係")]
+    [SerializeField] int recovery;
+    [SerializeField] float recoveryInterval;
+    [SerializeField] float hitInterval;
     [Header("HPUIキャンバス")]
     [SerializeField] GameObject HPUI;
     [Header("HPBar（スライダー）")]
@@ -30,6 +34,7 @@ public class Player : MonoBehaviour
 
     private int hp;                     // 現在体力
     private float attackCount = 0;      // 攻撃間隔用のカウンタ 
+    private bool hitFlg;
     private Vector3 attackPos;          // 攻撃場所保存用
     private Vector3 firstPoint;
     private Vector3 targetPos;          // 目標座標
@@ -47,6 +52,7 @@ public class Player : MonoBehaviour
         hp = maxHp;                         // hpを最大hpに初期化
         hpSlider = hpSliderUI.GetComponent<Slider>();   // スライダーの取得
         hpSlider.value = 1f;                            // スライダーの初期化
+        StartCoroutine(RecoveryHP());
     }
 
     // Update is called once per frame
@@ -97,7 +103,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         // メインカメラをプレイヤーの後に追従させる
-        mainCamera.transform.position = new Vector3(transform.position.x, mainCamera.transform.position.y, transform.position.z - kari);
+        mainCamera.transform.position = new Vector3(transform.position.x, mainCamera.transform.position.y, transform.position.z - backPos);
 
         // ターゲットと自身の座標の差を求める
         Vector3 dir = targetPos - transform.position;
@@ -107,10 +113,10 @@ public class Player : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, transform.position.y, targetPos.z), speed * Time.fixedDeltaTime);
         }
-        //else
-        //{
-        //    transform.position = targetPos;
-        //}
+        else
+        {
+            transform.position = targetPos;
+        }
     }
     #endregion
 
@@ -120,6 +126,7 @@ public class Player : MonoBehaviour
         // 攻撃をもらったときにhpが0以下にならないなら
         if (hp - attack > 0)
         {
+            hitFlg = true;
             hp -= attack;   // hpをダメージ分だけ減らす
         }
         else
@@ -140,9 +147,30 @@ public class Player : MonoBehaviour
     {
         return hp;
     }
+
+    IEnumerator RecoveryHP()
+    {
+        while (true)
+        {
+            yield return null;
+
+            if(hitFlg)
+            {
+                yield return new WaitForSeconds(hitInterval);
+                hitFlg = false;
+            }
+
+            if(hp > 0 && hp != maxHp & !hitFlg)
+            {
+                yield return new WaitForSeconds(recoveryInterval);
+                hp += recovery;
+            }
+        }
+    }
+
     #endregion
 
-    #region UI
+#region UI
     private void HideStatusUI()
     {
         HPUI.SetActive(false);

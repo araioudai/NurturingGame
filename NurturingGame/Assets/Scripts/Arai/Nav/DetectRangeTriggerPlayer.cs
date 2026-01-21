@@ -1,9 +1,10 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class DetectRangeTriggerPlayer : MonoBehaviour
 {
     #region private変数
-    [SerializeField] private NavMeshAgentControllerPlayer controller;
+    [SerializeField] private NavMeshAgentController controller;
     #endregion
 
     #region 当たり判定
@@ -11,8 +12,11 @@ public class DetectRangeTriggerPlayer : MonoBehaviour
     #region すり抜けた時
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(gameObject.name + "1");
         if (other.CompareTag("Enemy") || other.CompareTag("Obstacles"))
         {
+            Debug.Log(gameObject.name + "2");
+            controller.SetPos(other.transform);
             controller.AddTargetPoint(other.transform); //リストに範囲内ターゲットを追加
         }
     }
@@ -23,7 +27,7 @@ public class DetectRangeTriggerPlayer : MonoBehaviour
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Obstacles"))
         {
-            controller.RemoveTargetPoint(other.transform); //リストの範囲外ターゲットを削除
+            controller.RemoveTargetPoint(controller.GetTargetPos()); //リストの範囲外ターゲットを削除
         }
     }
     #endregion

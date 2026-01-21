@@ -1,8 +1,11 @@
 using System.Linq;
+using System.Collections;
+using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEngine;
-using static StageInfo;
-using static StageIndex;
+using UnityEngine.AI;
+using System.Collections.Generic;
+
 
 public class StageGenerator : MonoBehaviour
 {
@@ -19,20 +22,38 @@ public class StageGenerator : MonoBehaviour
     public StageInfo[] stageInfo;   // ステージ用のスクリプタブルオブジェクト
     public Transform stage;         // 生成する親オブジェクト
     public GameObject player;
+
     #endregion
 
     #region private変数
+    [Header("NavMesh")]
+    [SerializeField] private NavMeshSurface surface;
+    [Header("プレイヤーモブ生成場所")]
+    [SerializeField] private Transform spawn;
+    [Header("敵の城プレファブ")]
+    [SerializeField] private GameObject enemyCastle;
     [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
     private int stageIndex = 0;      // 生成するステージ
     private Vector3 spownPos;       // playerの生成座標
+
+    List<GameObject> cubes = new List<GameObject>();
+
+    private Vector3 casPos;
     #endregion
 
     #region　Unityイベント関数
     void Awake()
     {
-        stageIndex = Instance.GetIndex() - 1;
+        
 
-        if(stageIndex < 0 ||  stageIndex >= stageInfo.Length) stageIndex = 0;
+        if (surface == null)
+        {
+            surface = GetComponentInParent<NavMeshSurface>();
+        }
+
+        stageIndex = StageIndex.Instance.GetIndex();
+
+        if(stageIndex < 1 ||  stageIndex >= stageInfo.Length) stageIndex = 1;
 
         // スクリプタブルオブジェクトがnullじゃないなら
         if (stageInfo != null)
@@ -42,8 +63,47 @@ public class StageGenerator : MonoBehaviour
         }
 
         player.transform.position = spownPos;   // 生成座標にplayerをセット
+        spawn.transform.position = spownPos;    //生成座標にspwan場所をセット
     }
+
+    void Start()
+    {
+        StartCoroutine(BakeDelay());
+    }
+
+    #region ベイク処理
+    /// <summary>
+    /// 時間を置いて確実にBakeする
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BakeDelay()
+    {
+        yield return null; //1フレーム待つ
+
+        Bake();
+    }
+
+    /// <summary>
+    /// BakeのNullチェック
+    /// </summary>
+    private void Bake()
+    {
+        if (surface == null)
+        {
+            Debug.LogError("NavMeshSurface が null");
+            return;
+        }
+
+        Debug.Log("NavMesh Bake Start");
+        surface.BuildNavMesh();
+        GameManager.Instance.SetCastlePos(casPos);
+    }
+
     #endregion
+
+    #endregion
+
+
 
     #region　CSV関数
     private static void ImportCSV(StageInfo info)
@@ -92,24 +152,35 @@ public class StageGenerator : MonoBehaviour
                         {
                             spownPos = new Vector3(x, 1, z);
                         }
+                        
+                        if(index == (int)Info.GOAL)
+                        {
+                            casPos = new Vector3(x, 1, z);
 
 
+                        }
 
                         if (index == (int)Info.TOWER)
                         {
                             GameObject obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
                             TowerMove(i, j, obj);
-
                         }
                         else
                         {
-                            Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                            var obj = Instantiate(currentStage.stageObj[index], new Vector3(x, 0, z), Quaternion.identity, stage);
+                        
+                            if(index == (int)Info.GROUND || index == (int)Info.ROAD || index == (int)Info.START)
+                            {
+                                cubes.Add(obj);
+                            }
                         }
                     }
                 }
 
             }
         }
+
+       //  CombineMeshesForCollider();
     }
 
     private void TowerMove(int y, int x, GameObject obj)
@@ -124,6 +195,7 @@ public class StageGenerator : MonoBehaviour
             {
                 tower.transform.position = obj.transform.position + TOWER_DOWN;
                 Debug.Log("UP");
+                tower.transform.rotation = Quaternion.Euler(-rote, 0, rote * 2);
                 return;
             }
         }
@@ -160,6 +232,39 @@ public class StageGenerator : MonoBehaviour
                 Debug.Log("RIGHT");
                 return;
             }
+        }
+    }
+    #endregion
+
+    #region tanaka
+    /// <summary>
+    /// 当たり判定を親オブジェクトへ結合
+    /// </summary>
+    private void CombineMeshesForCollider()
+    {
+        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        List<CombineInstance> combine = new List<CombineInstance>();
+
+        foreach (MeshFilter mf in meshFilters)
+        {
+            if (mf.gameObject == this.gameObject) continue;
+
+            CombineInstance ci = new CombineInstance();
+            ci.mesh = mf.sharedMesh;
+            ci.transform = mf.transform.localToWorldMatrix * transform.worldToLocalMatrix;
+            combine.Add(ci);
+        }
+
+        Mesh combinedMesh = new Mesh();
+        combinedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        combinedMesh.CombineMeshes(combine.ToArray(), true, true);
+
+        MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = combinedMesh;
+
+        foreach (GameObject cube in cubes)
+        {
+            Destroy(cube.GetComponent<Collider>());
         }
     }
     #endregion

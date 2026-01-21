@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
         [SerializeField] private int lowerLevel = 1;
         [SerializeField] private int upperLevel = 50;*/
 
-    [Header("NavMesh")]
-    [SerializeField] private NavMeshSurface surface;
     [Header("最大SP(ポイント)")]
     [SerializeField] private float maxSp = 12;
     [Header("SPBar（スライダー）")]
@@ -37,12 +35,19 @@ public class GameManager : MonoBehaviour
 
     private float timer;
 
+    private Vector3 castlePos;
+
     #endregion
 
     #region ゲット関数
     public float GetPoint()
     {
         return (int)spLogical;
+    }
+
+    public Vector3 GetCastlePos()
+    {
+        return castlePos;
     }
     #endregion
 
@@ -51,6 +56,11 @@ public class GameManager : MonoBehaviour
     {
         sp -= point;
         spLogical -= point;
+    }
+
+    public void SetCastlePos(Vector3 point)
+    {
+        castlePos = point;
     }
     #endregion
 
@@ -75,13 +85,14 @@ public class GameManager : MonoBehaviour
         sp = 6;
         spSlider = spSliderUI.GetComponent<Slider>();
         spSlider.value = 1f;
-        Debug.Log(StageIndex.Instance.GetIndex());
+        //Debug.Log(StageIndex.Instance.GetIndex());
         //ApplyEnemyLevel();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Debug.Log(1f / Time.deltaTime);
         UpdateLogicalSP(); //内部SPの増加（一定間隔）
         UpdateDisplaySP(); //スライダーを徐々に近づける
     }
@@ -110,13 +121,6 @@ public class GameManager : MonoBehaviour
 
         spSlider.value = sp / maxSp;
     }
-    #endregion
-
-    #region ベイク処理
-    public void Bake()
-    {
-        surface.BuildNavMesh();
-    } 
     #endregion
 
     #region 敵登録用関数
