@@ -42,7 +42,6 @@ public class PanelSettings : MonoBehaviour
 
     #endregion
 
-    [System.Obsolete]
 
     void Start()
     {
@@ -52,6 +51,9 @@ public class PanelSettings : MonoBehaviour
         ObjectInit();
         ButtonInit();
         AnimationInit();
+
+
+
         skillPanels.SetActive(false);
         jobPanels.SetActive(false);
     }

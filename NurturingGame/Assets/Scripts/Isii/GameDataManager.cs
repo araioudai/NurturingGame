@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static Udon.Commons;
@@ -9,22 +10,12 @@ public class GameDataManager : MonoBehaviour
     [SerializeField] public SaveData playerData;
 
     [SerializeField] private string playerName; // プレイヤー名を指定するための変数
-[SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
+    [SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
 
-    void Start()
+    void Awake()
     {
         LoadGameData();
     }
-
-
-
-
-
-
-
-
-
-
 
     [ContextMenu("LoadGameData")]
     public void LoadGameData()
@@ -56,6 +47,8 @@ public class GameDataManager : MonoBehaviour
             GetComponent<StatusManager>().PlayerStatesInit(playerData);
             GetComponent<StatusManager>().MobStatesInit(playerData);
         }
+
+        FindFirstObjectByType<LevelUp>().LevelUpInit();
 
         GetComponent<TextManager>().InitTextUpdate(playerData);
     }
@@ -98,6 +91,8 @@ public class GameDataManager : MonoBehaviour
         {
             File.Delete(filePath);
             Debug.Log("データ削除: " + filePath, this);
+            FindFirstObjectByType<LevelUp>().LockIconRefresh();
+
             CreateData();
             Debug.Log("新規データ作成", this);
             SaveData();
@@ -107,4 +102,16 @@ public class GameDataManager : MonoBehaviour
             Debug.LogWarning("データファイルが存在しません: " + filePath, this);
         }
     }
+
+
+
+    public void PlayerResourcesAdd(int amount)
+    {
+        playerData.resources += amount;
+        GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
+    }
+
+
+
+
 }

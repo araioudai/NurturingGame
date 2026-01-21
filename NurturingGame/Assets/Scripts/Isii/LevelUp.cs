@@ -18,9 +18,10 @@ public class LevelUp : MonoBehaviour
     [SerializeField] Button pBuildingLevelUpButton;
     [SerializeField] List<Button> pSkillLevelUpButton;
 
+    [SerializeField] List<GameObject> lockIcons = new();
 
 
-
+    bool first = false;
 
 
 
@@ -30,13 +31,19 @@ public class LevelUp : MonoBehaviour
     void Start()
     {
 
-        SaveData playerData = FindFirstObjectByType<GameDataManager>().playerData;
+    }
+
+
+    void ButtonInit()
+    {
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
 
         tcBuildingLevelUpButton.onClick.AddListener(() => TCBuildingLevelUp());
         for (int i = 0; i < tcJobLevelUpButton.Count; i++)
         {
-            int index = i; // ローカル変数にキャプチャ
-            tcJobLevelUpButton[i].onClick.AddListener(() => TCJobLevelUp((JobType)index));
+            int indexJob = i; // ローカル変数にキャプチャ
+            tcJobLevelUpButton[i].onClick.AddListener(() => TCJobLevelUp((JobType)indexJob));
+            lockIcons.Add(tcJobLevelUpButton[i].transform.GetChild(1).gameObject);
         }
         pBuildingLevelUpButton.onClick.AddListener(() => PBuildingLevelUp());
         for (int i = 0; i < pSkillLevelUpButton.Count; i++)
@@ -46,8 +53,84 @@ public class LevelUp : MonoBehaviour
         }
     }
 
+    public void LevelUpInit()
+    {
+        playerData = FindFirstObjectByType<GameDataManager>().playerData;
+
+        if (!first)
+        {
+            ButtonInit();
+            first = true;
+        }
+        else
+        {
+            for (int i = 0; i < tcJobLevelUpButton.Count; i++)
+            {
+                lockIcons.Add(tcJobLevelUpButton[i].transform.GetChild(1).gameObject);
+            }
+        }
+
+        LockIconDel();
+        JobUnlockHangOver();
+    }
+
+    #region ロックアイコン削除
+    /// <summary>
+    /// ロックアイコン削除
+    /// </summary>
+    void LockIconDel()
+    {
+        for (int i = 0; i < (int)JobType.Count; i++)
+        {
+            if (playerData.trainingCentre.buildingLevel >= i + 1)
+            {
+                lockIcons[i].SetActive(false);
+            }
+            else
+            {
+                lockIcons[i].SetActive(true);
+            }
+        }
+    }
+
+    public void LockIconRefresh()
+    {
+        lockIcons.Clear();
+    }
+    #endregion
 
     #region モブ
+
+
+
+
+
+
+
+
+
+    void JobUnlockHangOver()
+    {
+        int buildingLevel = playerData.trainingCentre.buildingLevel;
+
+        for (int i = 0; i < FindFirstObjectByType<HangOvers>().activeJob.Count; i++)
+        {
+            if (buildingLevel >= i + 1)
+            {
+                FindFirstObjectByType<HangOvers>().activeJob[i] = true;
+            }
+            else
+            {
+                FindFirstObjectByType<HangOvers>().activeJob[i] = false;
+            }
+
+            Debug.Log("職業タイプ: " + (JobType)i + " アクティブ状態: " + FindFirstObjectByType<HangOvers>().activeJob[i], this);
+        }
+
+    }
+
+
+
 
     [ContextMenu("兵舎/建物レベルアップ")]
     /// <summary>
@@ -66,9 +149,33 @@ public class LevelUp : MonoBehaviour
                 playerData.trainingCentre.buildingLevel++;
                 Debug.Log("兵舎/建物レベルアップ成功！ 新しいレベル: " + playerData.trainingCentre.buildingLevel, this);
 
+
                 GetComponent<StatusManager>().PlayerStatesSet(StatusType.Player, playerData.trainingCentre.buildingLevel);
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<TextManager>().TrainingCenterLevelTextUpdate(playerData.trainingCentre.buildingLevel);
+
+                switch (playerData.trainingCentre.buildingLevel)
+                {
+                    case 2:
+                        playerData.trainingCentre.tcLevelUp.ArcherLevel = 1;
+                        GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, JobType.Archer, playerData.trainingCentre.tcLevelUp.GetJobLevelText(JobType.Archer));
+                        break;
+                    case 3:
+                        playerData.trainingCentre.tcLevelUp.PaladinLevel = 1;
+                        GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, JobType.Paladin, playerData.trainingCentre.tcLevelUp.GetJobLevelText(JobType.Paladin));
+                        break;
+                    case 4:
+                        playerData.trainingCentre.tcLevelUp.MageLevel = 1;
+                        GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, JobType.Mage, playerData.trainingCentre.tcLevelUp.GetJobLevelText(JobType.Mage));
+                        break;
+                    default:
+                        break;
+                }
+
+                GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
+
+                JobUnlockHangOver();
+                LockIconDel();
 
                 return true;
             }
@@ -165,6 +272,8 @@ public class LevelUp : MonoBehaviour
                 GetComponent<TextManager>().ResourcesTextUpdate(playerData.resources);
                 GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, jobType, playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType));
                 GetComponent<TextManager>().JobLevelTextUpdate(1, playerData);
+
+                LockIconDel();
 
                 return true;
             }
