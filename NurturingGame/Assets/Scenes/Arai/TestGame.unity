@@ -1389,8 +1389,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawn
   spawnAreaSize: {x: 3, y: 0, z: 3}
-  charaKnight: {fileID: 5121400965870576446, guid: e1f5f6be509ee7248a9a74a513935c6f, type: 3}
-  charaArcher: {fileID: 5739847069925495729, guid: b49ebca307b975447aab17a181cbf04d, type: 3}
+  charaKnight: {fileID: 5121400965870576446, guid: b42ffa8cdcb287149abe72192459687b, type: 3}
+  charaArcher: {fileID: 5121400965870576446, guid: e1f5f6be509ee7248a9a74a513935c6f, type: 3}
   enemyLimit: 1000
 --- !u!4 &622217767
 Transform:

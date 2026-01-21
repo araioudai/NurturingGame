@@ -39,6 +39,8 @@ public class NavMeshAgentController : EnemyStatus
     private bool isAttack;
     private float attackCount = 0;
 
+    private bool targetFlg = false;
+
     #endregion
 
     #region セット関数
@@ -58,7 +60,7 @@ public class NavMeshAgentController : EnemyStatus
     #region ゲット関数
     public Transform GetFirstPos()
     {
-        firstPoint = GameObject.Find(castleName).transform;
+        // firstPoint = GameObject.Find(castleName).transform;
         return firstPoint;
     }
 
@@ -92,14 +94,14 @@ public class NavMeshAgentController : EnemyStatus
     protected override void Update()
     {
         base.Update();
-        Debug.Log(state);
+        // Debug.Log(state);
 
+        // Debug.Log(firstPoint.position);
         switch (state)
         {
             case MOVE:
                 //print("移動");
                 ResumeAgentMovement();
-
                 break;
             case ATTACK:
                 StopAgentMovement();
@@ -332,10 +334,13 @@ public class NavMeshAgentController : EnemyStatus
             //対象がいない場合は攻撃ポイント非表示
             point.SetActive(false);
             state = MOVE;
+
+            // 城に戻す
+            target.transform.position = firstPoint.position;
+            agent.SetDestination(firstPoint.position);
         }
     }
     #endregion
-
 
     #region 一番近い攻撃対象物の場所を返す処理(移動場所)
     private Transform GetTargetPoint()
@@ -352,6 +357,7 @@ public class NavMeshAgentController : EnemyStatus
         {
             if (t == null) continue;
 
+            Debug.Log(t.position);
             float dist = Vector3.Distance(transform.position, t.position);
 
             if (dist < minDist)
