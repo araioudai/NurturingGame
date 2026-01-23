@@ -5304,7 +5304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7073f9bb41cb33b47920721e5572d166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitJudgment
-  controller: {fileID: 0}
+  controller: {fileID: 2044538276}
 --- !u!114 &2044538276
 MonoBehaviour:
   m_ObjectHideFlags: 0
