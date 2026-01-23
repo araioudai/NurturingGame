@@ -16,7 +16,7 @@ public class EnemyStatus : MonoBehaviour
     #region private変数
     [Header("ステージごとの敵データ")]
     [SerializeField, EnumIndex(typeof(Stage))] 
-    private EnemyState[] state;
+    private EnemyState[] status;
 
     [Header("HP（バー用）")]
     [SerializeField] protected int hp;
@@ -37,13 +37,13 @@ public class EnemyStatus : MonoBehaviour
     protected virtual void Start()
     {
         //hp関連
-        maxHp = state[StageIndex.Instance.GetIndex()].max;
+        maxHp = status[StageIndex.Instance.GetIndex()].max;
         hp = maxHp;
         hpSlider = hpSliderUI.GetComponent<Slider>();
         hpSlider.value = 1f;
 
         //攻撃関連
-        attackPower = state[StageIndex.Instance.GetIndex()].power;
+        attackPower = status[StageIndex.Instance.GetIndex()].power;
     }
 
     protected virtual void Update()
