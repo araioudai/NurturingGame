@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b4606393eca6948832ffc3ec1f47e3, type: 3}
+  m_Name: EnemySpawnStage4
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMobData
+  spawnMax: 9
+  spawnNumber: 3
+  spawnAreaSize: {x: 3, y: 0, z: 3}
+  charaKnight: {fileID: 189861412417117420, guid: d661e6962ae07ec49b58af5bc6ae5293, type: 3}
+  charaArcher: {fileID: 6776593913127641159, guid: 74d1ae4ab0761c047a4a650a0b4ca1e3, type: 3}
