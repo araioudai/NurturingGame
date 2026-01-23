@@ -6,8 +6,8 @@ using static Udon.Commons;
 public class HangOvers : MonoBehaviour
 {
     #region 持ち越しデータ
-    [HideInInspector ] public Status playerState = new();
-    [HideInInspector] public List<Status> mobStatus = new();
+    public Status playerState = new();
+    public List<Status> mobStatus = new();
 
     public List<bool> activeJob = new(4) { false, false, false, false };
 

@@ -8,12 +8,14 @@ using static Udon.Commons;
 public class GameDataManager : MonoBehaviour
 {
     [SerializeField] public SaveData playerData;
+    HangOvers hangOvers;
 
     [SerializeField] private string playerName; // プレイヤー名を指定するための変数
     [SerializeField] private string saveFileName = "players.json";  // 保存ファイル名
 
     void Awake()
     {
+        hangOvers = GameObject.Find("DontDestroy").GetComponent<HangOvers>();
         LoadGameData();
     }
 
@@ -38,6 +40,11 @@ public class GameDataManager : MonoBehaviour
                 int jobLevel = playerData.trainingCentre.tcLevelUp.GetJobLevelText(jobType);
                 GetComponent<StatusManager>().MobStatesSet(StatusType.Mob, jobType, jobLevel);
             }
+
+            // 持ち越しデータに反映
+            hangOvers.SetMobData(GetComponent<StatusManager>().mobStatus);
+
+
         }
         else
         {

@@ -8,4 +8,11 @@ public class AttackPower : MonoBehaviour
     {
         return m_Power;
     }
+
+    public void SetPower(int power)
+    {
+        m_Power = power;
+    }
+
+
 }

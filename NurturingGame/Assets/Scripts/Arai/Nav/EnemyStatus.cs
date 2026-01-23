@@ -94,4 +94,20 @@ public class EnemyStatus : MonoBehaviour
         hpSlider.value = (float)GetHp() / (float)GetMaxHp();
     }
     #endregion
+
+    #region ��U�����ւƂȂ�
+    public void SetHPInit(int hpValue)
+    {
+        maxHp = hpValue;
+        hp = maxHp;
+    }
+
+    public void SetAttackPower(int attackValue)
+    {
+        attackPower = attackValue;
+    }
+    #endregion
+
+
+
 }
