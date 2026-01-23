@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
@@ -61,6 +62,7 @@ public class Castle : MonoBehaviour
                             player.RemoveAttackTarget(this.transform);
                             player.RemoveTargetPoint(this.transform);
                         }*/
+            SceneManager.LoadScene("resultTest011");
 
             Destroy(gameObject);
         }
