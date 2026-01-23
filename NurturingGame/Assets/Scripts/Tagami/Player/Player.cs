@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     private int hp;                     // 現在体力
     private float attackCount = 0;      // 攻撃間隔用のカウンタ 
     private bool hitFlg;
+    private bool buttonFlg;
     private Vector3 attackPos;          // 攻撃場所保存用
     private Vector3 firstPoint;
     private Vector3 targetPos;          // 目標座標
@@ -83,7 +85,7 @@ public class Player : MonoBehaviour
     void GetClickPoint()
     {
         // 左クリックされたとき
-        if (Input.GetMouseButton(0)) 
+        if (Input.GetMouseButton(0) && !buttonFlg) 
         {
             // スクリーンをクリックしたポイントを取得
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -96,6 +98,16 @@ public class Player : MonoBehaviour
                 //Debug.Log(targetPos);
             }
         }
+    }
+
+    public void OnButtonDown()
+    {
+        buttonFlg = true;
+    }
+
+    public void OnButtonUp()
+    {
+        buttonFlg = false;
     }
     #endregion
 
