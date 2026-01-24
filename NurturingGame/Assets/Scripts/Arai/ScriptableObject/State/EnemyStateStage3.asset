@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf9eee477b86a145abe1d9fd0b95db1, type: 3}
   m_Name: EnemyStateStage3
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
-  maxHp: 100
-  attackPower: 10
+  maxHp: 300
+  attackPower: 30
