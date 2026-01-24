@@ -830,9 +830,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba49555120e628e418e28eeef943b1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentController
-  maxHp: 75
+  status:
+  - {fileID: 11400000, guid: f1832e0adfb6d6e42914c64a4869270f, type: 2}
+  - {fileID: 11400000, guid: f1832e0adfb6d6e42914c64a4869270f, type: 2}
+  - {fileID: 11400000, guid: cd17c416634a8394587754daeed0a007, type: 2}
+  - {fileID: 11400000, guid: da1a91734ff04004aa6d8e3378d95833, type: 2}
+  - {fileID: 11400000, guid: a8026927164e2cd4697b54bdc952a431, type: 2}
   hp: 0
-  attackPower: 1
   HPUI: {fileID: 5635456724988315982}
   hpSliderUI: {fileID: 3182553926287608050}
   agent: {fileID: 4061954541459274508}
@@ -840,7 +844,7 @@ MonoBehaviour:
   point: {fileID: 4215125832339229527}
   attackArea: 20
   attackInterval: 1
-  castleName: PlayerCastle
+  castleName: PlayerCastle(Clone)
 --- !u!195 &4061954541459274508
 NavMeshAgent:
   m_ObjectHideFlags: 0

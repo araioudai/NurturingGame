@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abf9eee477b86a145abe1d9fd0b95db1, type: 3}
-  m_Name: EnemyStateStage4
+  m_Name: ArcherStateStage2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
-  maxHp: 500
-  attackPower: 50
+  maxHp: 200
+  attackPower: 20

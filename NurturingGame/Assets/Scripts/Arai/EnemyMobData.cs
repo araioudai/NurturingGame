@@ -32,7 +32,7 @@ public class EnemyMobData : ScriptableObject
     /// </summary>
     public int number
     {
-        get { return number; }
+        get { return spawnNumber; }
     }
 
     /// <summary>

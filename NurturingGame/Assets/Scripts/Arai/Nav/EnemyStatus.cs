@@ -36,6 +36,8 @@ public class EnemyStatus : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
+        //Debug.Log(this.gameObject.name);
+
         //hp関連
         maxHp = status[StageIndex.Instance.GetIndex()].max;
         hp = maxHp;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b4606393eca6948832ffc3ec1f47e3, type: 3}
   m_Name: EnemySpawnStage4
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMobData
-  spawnMax: 9
+  spawnMax: 18
   spawnNumber: 3
   spawnAreaSize: {x: 3, y: 0, z: 3}
   charaKnight: {fileID: 189861412417117420, guid: d661e6962ae07ec49b58af5bc6ae5293, type: 3}

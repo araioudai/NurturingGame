@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using System;
 
 
 public class StageGenerator : MonoBehaviour
@@ -30,8 +31,10 @@ public class StageGenerator : MonoBehaviour
     [SerializeField] private NavMeshSurface surface;
     [Header("プレイヤーモブ生成場所")]
     [SerializeField] private Transform spawn;
+    [SerializeField] GameObject playerCastle;
     [Header("敵の城プレファブ")]
     [SerializeField] private GameObject enemyCastle;
+    [SerializeField] private GameObject enemySpawn;
     [SerializeField] float objInterval = 2;     // オブジェクト生成の間隔
     private int stageIndex = 0;      // 生成するステージ
     private Vector3 spownPos;       // playerの生成座標
@@ -64,6 +67,7 @@ public class StageGenerator : MonoBehaviour
 
         player.transform.position = spownPos;   // 生成座標にplayerをセット
         spawn.transform.position = spownPos;    //生成座標にspwan場所をセット
+        Instantiate(playerCastle, spownPos, Quaternion.identity);
     }
 
     void Start()
@@ -150,13 +154,14 @@ public class StageGenerator : MonoBehaviour
                     {
                         if (index == (int)Info.START)
                         {
-                            spownPos = new Vector3(x, 1, z);
+                            spownPos = new Vector3(x, 0, z);
                         }
                         
                         if(index == (int)Info.GOAL)
                         {
                             casPos = new Vector3(x, 1, z);
-
+                            var obj = Instantiate(enemySpawn, new Vector3(x, 1, z), Quaternion.identity);
+                            SpawnMove(i, j, obj);
 
                         }
 
@@ -185,9 +190,9 @@ public class StageGenerator : MonoBehaviour
 
     private void TowerMove(int y, int x, GameObject obj)
     {
-
-        StageInfo currentStage = stageInfo[stageIndex];
         GameObject tower = obj.transform.GetChild(1).gameObject;
+        StageInfo currentStage = stageInfo[stageIndex];
+           
 
         if (y - 1 >= 0)
         {
@@ -234,6 +239,12 @@ public class StageGenerator : MonoBehaviour
             }
         }
     }
+
+    private void SpawnMove(int y, int x, GameObject obj)
+    {
+        obj.transform.position = new Vector3(x * objInterval, 1, (-y - 1) * objInterval);
+    }
+
     #endregion
 
     #region tanaka
