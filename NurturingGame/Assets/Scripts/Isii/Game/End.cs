@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class End : MonoBehaviour
@@ -35,16 +36,16 @@ public class End : MonoBehaviour
     {
         endUI.SetActive(true);
         resultImage.SetActive(true);
-        waitResultEnd();
+        WaitResultEnd();
     }
 
 
 
 
 
-    async void waitResultEnd()
+    async void WaitResultEnd()
     {
-        await System.Threading.Tasks.Task.Delay(3000);
+        await Task.Delay(3000);
         resultImage.SetActive(false);
     }
 

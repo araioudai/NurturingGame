@@ -212,8 +212,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1117869873894330471, guid: 3daa51f3eaf4f8444b1769822c80f817, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 36a14d8831d2db74abeeb6b7de1bf2f4, type: 3}
+    - target: {fileID: 1117869873894330471, guid: 3daa51f3eaf4f8444b1769822c80f817, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1523131456833636985, guid: 3daa51f3eaf4f8444b1769822c80f817, type: 3}
       propertyPath: m_Name
@@ -259,8 +263,8 @@ MonoBehaviour:
   endResource: {fileID: 11400000, guid: 22df5455307fe7140a285f3eb92573f5, type: 2}
   saveFileName: players.json
   getText: {fileID: 2087447267}
-  clear: 1
-  over: 0
+  clear: 0
+  over: 1
 --- !u!1 &297802042
 GameObject:
   m_ObjectHideFlags: 0

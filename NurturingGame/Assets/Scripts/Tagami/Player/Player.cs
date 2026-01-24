@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -150,7 +151,10 @@ public class Player : MonoBehaviour
             HideStatusUI();
 
             // ゲームオーバー処理
-            Destroy(this.gameObject);
+
+            SceneManager.LoadScene("OverTest");
+
+            // Destroy(this.gameObject);
         }
     }
 
