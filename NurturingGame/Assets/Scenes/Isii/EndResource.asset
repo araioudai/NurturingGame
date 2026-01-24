@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46350bb0a7dbe10458a36b8f674e1257, type: 3}
   m_Name: EndResource
   m_EditorClassIdentifier: Assembly-CSharp::EndResource
-  gameClearPoints: 100000
-  gameOverPoints: 500000
+  gameClearPoints: 15000
+  gameOverPoints: 1000

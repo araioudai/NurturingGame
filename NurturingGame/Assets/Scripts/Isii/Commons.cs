@@ -109,7 +109,7 @@ namespace Udon
                 return new SaveData
                 {
                     playerName = playerName,
-                    resources = 40000,
+                    resources = 15000,
                     trainingCentre = new TrainingCentre
                     {
                         buildingLevel = 1,
