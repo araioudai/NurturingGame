@@ -49,8 +49,7 @@ public class EnemySpawn : MonoBehaviour
     /// </summary>
     /// <returns>生成するキャラ</returns>
     private int GetRandom()
-    {
-<<<<<<< HEAD
+    {/*
         if(GameManager.Instance.GetPoint() >= 1)
         {
             //騎士をインスタンス化する(生成する)
@@ -67,13 +66,11 @@ public class EnemySpawn : MonoBehaviour
             else
             {
                 Debug.LogError("AttackPower が見つかりません");
-            }
-=======
+            }*/
         Random.Range(0, 2);
         return random;
     }
     #endregion
->>>>>>> enemySpawn
 
     #region 生成計測処理
     /// <summary>
@@ -124,8 +121,7 @@ public class EnemySpawn : MonoBehaviour
     /// <returns>生成する場所</returns>
     private Vector3 GetRandomPos()
     {
-<<<<<<< HEAD
-        if (GameManager.Instance.GetPoint() >= 2)
+        /*if (GameManager.Instance.GetPoint() >= 2)
         {
             //弓兵をインスタンス化する(生成する)
             var archer = Instantiate(charaArcher, spawnPosition, Quaternion.identity);
@@ -134,8 +130,8 @@ public class EnemySpawn : MonoBehaviour
             archer.GetComponentInChildren<AttackPower>(true).SetPower(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[1].attack);
             //ポイントをマイナス
             GameManager.Instance.SetMinusPoint(2);
-        }
-=======
+        }*/
+
         //範囲内でランダムな座標を計算
         randomX = Random.Range(-data[StageIndex.Instance.GetIndex()].spawnSize.x / 2, data[StageIndex.Instance.GetIndex()].spawnSize.x / 2);
         randomZ = Random.Range(-data[StageIndex.Instance.GetIndex()].spawnSize.z / 2, data[StageIndex.Instance.GetIndex()].spawnSize.z / 2);
@@ -159,7 +155,6 @@ public class EnemySpawn : MonoBehaviour
 
         //騎士をインスタンス化する(生成する)
         Instantiate(data[StageIndex.Instance.GetIndex()].knight, spawnPosition, Quaternion.identity);
->>>>>>> enemySpawn
     }
     #endregion
 
