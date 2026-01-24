@@ -1427,7 +1427,9 @@ MonoBehaviour:
   player: {fileID: 2044538272}
   surface: {fileID: 761894122}
   spawn: {fileID: 622217767}
+  playerCastle: {fileID: 8661843081747313746, guid: c0a4bf92283fab046854ac7644ff582c, type: 3}
   enemyCastle: {fileID: 1895612713767985002, guid: 8a50edba136936842bfa4a6a4a3a84de, type: 3}
+  enemySpawn: {fileID: 3746853897398969257, guid: 10b34b4a59600434b87a42f8a4b688fd, type: 3}
   objInterval: 8
 --- !u!4 &513794773
 Transform:

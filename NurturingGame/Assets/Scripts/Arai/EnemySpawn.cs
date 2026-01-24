@@ -25,14 +25,15 @@ public class EnemySpawn : MonoBehaviour
     private int random;                                    //ランダム生成用
 
     private float coolTimer;                               //クールダウン計測用
-    private const float coolTime = 5;                      //クールダウンセット用
+    private const float coolTime = 10;                     //クールダウンセット用
+    private int cnt;
     #endregion
 
     #region Unity呼び出し関数
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        coolTimer = 5; 
     }
 
     // Update is called once per frame
@@ -92,6 +93,11 @@ public class EnemySpawn : MonoBehaviour
     /// </summary>
     private void RandomSpawn()
     {
+        if(cnt >= data[StageIndex.Instance.GetIndex()].max)
+        {
+            return;
+        }
+
         if (coolTimer <= 0)
         {
             switch (GetRandom())
@@ -100,12 +106,14 @@ public class EnemySpawn : MonoBehaviour
                     for(int i = 0; i < data[StageIndex.Instance.GetIndex()].number; i++)
                     {
                         SpawnKnigth();
+                        cnt++;
                     }
                     break;
                 case 1:
                     for (int i = 0; i < data[StageIndex.Instance.GetIndex()].number; i++)
                     {
                         SpawnArcher();
+                        cnt++;
                     }
                     break;
             }

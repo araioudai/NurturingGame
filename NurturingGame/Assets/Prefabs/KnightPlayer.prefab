@@ -651,9 +651,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba49555120e628e418e28eeef943b1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavMeshAgentController
-  maxHp: 100
+  status:
+  - {fileID: 11400000, guid: 8e3ddfb05c25b3345817a352401f4122, type: 2}
+  - {fileID: 11400000, guid: 8e3ddfb05c25b3345817a352401f4122, type: 2}
+  - {fileID: 11400000, guid: cef5e02939a714648a67b9a09a4d163a, type: 2}
+  - {fileID: 11400000, guid: 34f92328b6688fe42ac563752e400d2c, type: 2}
+  - {fileID: 11400000, guid: c2eee9768337be947a1a9bfa2cb4a52f, type: 2}
   hp: 0
-  attackPower: 1
   HPUI: {fileID: 822765919743672344}
   hpSliderUI: {fileID: 3405348373155554048}
   agent: {fileID: 7376656707531760452}
