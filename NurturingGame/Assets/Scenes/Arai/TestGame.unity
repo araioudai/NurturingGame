@@ -5269,7 +5269,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &2044538274
 CapsuleCollider:
@@ -5327,7 +5327,7 @@ MonoBehaviour:
   hitInterval: 0.5
   HPUI: {fileID: 306410164}
   hpSliderUI: {fileID: 412066792}
-  speed: 5
+  speed: 8
   threshold: 0.2
   target: {fileID: 1387604222}
   point: {fileID: 28357782}

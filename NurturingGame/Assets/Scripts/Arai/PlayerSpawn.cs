@@ -63,10 +63,17 @@ public class PlayerSpawn : MonoBehaviour
         if (GameManager.Instance.GetPoint() >= 1)
         {
             //騎士をインスタンス化する(生成する)
-            Instantiate(charaKnight, spawnPosition, Quaternion.identity);
+            var knight = Instantiate(charaKnight, spawnPosition, Quaternion.identity);
 
             //ポイントをマイナス
             GameManager.Instance.SetMinusPoint(1);
+
+            Debug.Log(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[0].hp);
+            knight.GetComponent<NavMeshAgentController>().SetHPInit(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[0].hp);
+
+            knight.GetComponentInChildren<AttackPower>(true).SetPower(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[0].attack);
+
+
         }
     }
     #endregion
@@ -77,10 +84,14 @@ public class PlayerSpawn : MonoBehaviour
         if (GameManager.Instance.GetPoint() >= 2)
         {
             //弓兵をインスタンス化する(生成する)
-            Instantiate(charaArcher, spawnPosition, Quaternion.identity);
+            var archer = Instantiate(charaArcher, spawnPosition, Quaternion.identity);
 
             //ポイントをマイナス
             GameManager.Instance.SetMinusPoint(2);
+
+            archer.GetComponent<NavMeshAgentController>().SetHPInit(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[1].hp);
+            archer.GetComponentInChildren<AttackPower>(true).SetPower(GameObject.Find("DontDestroy").GetComponent<HangOvers>().GetMobData()[1].attack);
+
         }
     }
     #endregion

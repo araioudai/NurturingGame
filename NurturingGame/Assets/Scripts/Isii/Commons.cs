@@ -11,9 +11,9 @@ namespace Udon
         {
             Knight = 0,
             Archer,
+            Count,
             Paladin,
             Mage,
-            Count
         }
 
         [Serializable]
@@ -109,14 +109,14 @@ namespace Udon
                 return new SaveData
                 {
                     playerName = playerName,
-                    resources = 15000,
+                    resources = 1000,
                     trainingCentre = new TrainingCentre
                     {
-                        buildingLevel = 1,
+                        buildingLevel = 2,
                         tcLevelUp = new TCLevelUp
                         {
                             KnightLevel = 1,
-                            ArcherLevel = 0,
+                            ArcherLevel = 1,
                             PaladinLevel = 0,
                             MageLevel = 0
                         }

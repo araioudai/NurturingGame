@@ -1992,6 +1992,7 @@ MonoBehaviour:
     speed: 0
     skillAttack: 0
   mobStatus: []
+  activeJob: 00000000
 --- !u!114 &479071700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3802,7 +3803,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: -0.0005493164, y: 0}
-  m_SizeDelta: {x: 1460, y: 600}
+  m_SizeDelta: {x: 740, y: 600}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &961408213
 MonoBehaviour:
@@ -4439,6 +4440,10 @@ PrefabInstance:
     - target: {fileID: 6200667890925518537, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
       propertyPath: m_Name
       value: Template_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200667890925518537, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7640853161464307043, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
       propertyPath: m_Pivot.x
@@ -6085,6 +6090,7 @@ MonoBehaviour:
   - {fileID: 1357149486}
   - {fileID: 1402944536}
   - {fileID: 100173992}
+  lockIcons: []
 --- !u!114 &1595640667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7696,6 +7702,10 @@ PrefabInstance:
     - target: {fileID: 6200667890925518537, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
       propertyPath: m_Name
       value: Template_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200667890925518537, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7640853161464307043, guid: 1421171e28e3fa542ad0176b8d0e714e, type: 3}
       propertyPath: m_Pivot.x

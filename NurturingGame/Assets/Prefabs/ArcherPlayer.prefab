@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 5145409716903834698}
   - component: {fileID: 6908476874336494341}
   - component: {fileID: 6335153956183446886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ArcherPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}

@@ -40,12 +40,17 @@ public class EnemyStatus : MonoBehaviour
 
         //hp関連
         maxHp = status[StageIndex.Instance.GetIndex()].max;
-        hp = maxHp;
+        
+        if(this.gameObject.CompareTag("Enemy"))
+        {
+            hp = maxHp;
+
+            //攻撃関連
+            attackPower = status[StageIndex.Instance.GetIndex()].power;
+        }
+
         hpSlider = hpSliderUI.GetComponent<Slider>();
         hpSlider.value = 1f;
-
-        //攻撃関連
-        attackPower = status[StageIndex.Instance.GetIndex()].power;
     }
 
     protected virtual void Update()

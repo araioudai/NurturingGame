@@ -86,7 +86,6 @@ public class NavMeshAgentController : EnemyStatus
         target.transform.position = firstPoint.position;
         attackCount = attackInterval;
         point.SetActive(false);
-        Debug.Log(target.transform.position);
         agent.SetDestination(target.position);
         base.Start();
     }
